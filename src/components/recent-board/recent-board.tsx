@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import styles from './recent-board.module.scss';
+import { AllSnippets } from '../all-snippets/all-snippets';
 
 export interface RecentBoardProps {
     className?: string;
@@ -10,5 +11,9 @@ export interface RecentBoardProps {
  * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
  */
 export const RecentBoard = ({ className }: RecentBoardProps) => {
-    return <div className={classNames(styles.root, className)}>RecentBoard</div>;
+    return (
+         <div className={classNames(styles.root, className)}>
+            <AllSnippets />
+    </div>
+    );
 };

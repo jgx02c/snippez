@@ -71,10 +71,10 @@ def projects(request):
 def recordings(request, id):
     
     dataFour = [
-        {"snippetID": 1, "typeID": "JS", "userID": 1, "snippetName": "Recording 1", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
-         {"snippetID": 2, "typeID": "Python", "userID": 1, "snippetName": "Recording 1", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
-          {"snippetID": 3, "typeID": "HTML", "userID": 1, "snippetName": "Recording 1", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
-           {"snippetID": 4, "typeID": "CSS", "userID": 1, "snippetName": "Recording 1", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
+        {"snippetID": 1, "typeID": "JS", "userID": 1, "snippetName": "Name 1", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
+         {"snippetID": 2, "typeID": "Python", "userID": 1, "snippetName": "Name 2", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
+          {"snippetID": 3, "typeID": "HTML", "userID": 1, "snippetName": "Name 3", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
+           {"snippetID": 4, "typeID": "CSS", "userID": 1, "snippetName": "Name 4", "snippetDescription": ".mp3", "snippetCodes": ["two","one"], "snippetWriteups": ["one", "two"], "snippetDate": "10/16/2022", "snippetSource": "Self", "snippetNumberOfProjectsUsed": 3 },
     ]
 
  # Get the projectID from the request parameters

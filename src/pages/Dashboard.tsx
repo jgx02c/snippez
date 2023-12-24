@@ -60,7 +60,9 @@ export const Dashboard = ({ className }: AppProps) => {
         </div>
     
             <div className={styles.divDivider} />
+            <div className={styles.content}>
         {renderComponent()}
+        </div>
         </span>
         </div>
   );

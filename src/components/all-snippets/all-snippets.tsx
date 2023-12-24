@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import styles from './my-snippets-board.module.scss';
+import styles from './all-snippets.module.scss';
 import React, { useEffect, useState } from 'react';
 import * as controller from '../../../classes/controller.js';
 
@@ -11,8 +11,8 @@ interface SnippetType {
   typeID: string;
   snippetName: string;
   snippetDescription: string;
-  snippetCode: string[];
-  snippetWriteup: string[];
+  snippetCodes: string[];
+  snippetWriteups: string[];
   snippetPicture: string;
   snippetDate: string;
   snippetSource: string;
@@ -73,19 +73,6 @@ export const AllSnippets = ({ className }: MySnippetsBoardProps) => {
             {...snippets.find(snippet => snippet.snippetID === selectedSnippetID)}                />
             ) : (
                 <>
-                    <div className={styles.divMain}>
-                        <span className={styles.spanMain}>
-                            <div className={styles.divText}>
-                                <h1>My Snippets</h1>
-                            </div>
-                            <div className={styles.divButtons}>
-                                <select><option>Language</option><option>Recent</option><option>Created</option></select>
-                                <button>Search</button>
-                                <button>View</button>
-                                <button>Create Snippet</button>
-                            </div>
-                        </span>
-                    </div>
 
                     {chunkedData.map((row, rowIndex) => (
                         <div key={rowIndex} className={styles.row}>
@@ -98,8 +85,8 @@ export const AllSnippets = ({ className }: MySnippetsBoardProps) => {
                                         snippetDate={snippet.snippetDate}
                                         snippetName={snippet.snippetName}
                                         snippetDescription={snippet.snippetDescription}
-                                        snippetCode={snippet.snippetCode}
-                                        snippetWriteup={snippet.snippetWriteup}
+                                        snippetCode={snippet.snippetCodes}
+                                        snippetWriteup={snippet.snippetWriteups}
                                         snippetPicture={snippet.snippetPicture}
                                         snippetSource={snippet.snippetSource}
                                         snippetNumberOfProjectsUsed={snippet.snippetNumberOfProjectsUsed}
