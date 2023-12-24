@@ -1,0 +1,35 @@
+.root {}
+
+.divMain {
+    display: inline-block;
+    width: 15em;
+    border-radius: 1em;
+    border: 1px solid black;
+}
+
+.divButtons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.divImg {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgClass {
+    width: 6em;
+    height: 6em;
+}
+
+.buttonClass {
+    margin: 2em;
+    padding-left: 1.2em;
+}
+
+.mainSpan {
+    display: flex;
+}
