@@ -1,0 +1,54 @@
+.root {
+   
+}
+
+.row {
+    display: flex;
+    margin-bottom: 2em;
+    /* Adjust the margin between rows as needed */
+    margin-right: 2em;
+    margin-left: 2em;
+    margin-top: 2em;
+}
+
+.parent-item {
+    width: calc(33.33% - 20px);
+    /* Adjust the width and margin as needed */
+    margin-right: 20px;
+    /* Adjust the margin between child components in the same row */
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.spanProjectsBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 4em;
+    padding-right: 4em;
+    height: 4em;
+}
+
+.ProjectWord {
+    font-size: 1.5em;
+}
+
+.divLeftBar {}
+
+.divRightBar {}
+
+.buttonSearch {
+    margin: 0.25em;
+}
+
+.buttonAdjust {
+    margin: 0.25em;
+}
+
+.buttonCreateNewProject {
+    margin: 0.25em;
+}
+
+.divMain {
+    
+}

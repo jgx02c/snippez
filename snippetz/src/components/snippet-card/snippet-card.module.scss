@@ -1,0 +1,54 @@
+.root {}
+
+.imgLogo {
+    height: 15em;
+    width: 5em;
+}
+
+.divMain {
+    width: 20em;
+    height: 15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: space-between;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 1em;
+    margin: 0em 1em;
+}
+
+.h1Class {
+    font-size: 1em;
+}
+
+.spanClass {
+    display: flex;
+    width: 100%;
+}
+
+.imgClass {
+    width: 5em;
+    height: 5em;
+}
+
+.h1Class {}
+
+.paragraphClass {
+    font-size: 0.5em;
+}
+
+.divRight {
+    width: 75%;
+    margin: 1em;
+}
+
+.divLeft {
+    width: 25%;
+    margin: 1em;
+    line-height: .5;
+}
+
+.h3Class {
+    font-size: 1em;
+}

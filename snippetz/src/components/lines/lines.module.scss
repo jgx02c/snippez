@@ -1,0 +1,36 @@
+.root {}
+
+.spanMain {
+    width: 100em;
+    display: flex;
+    height: 100%;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.divCenter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 40em;
+    float: initial;
+    bottom: 100%;
+    left: 50%;
+    right: 50%;
+}
+
+.spanCenter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-items: center;
+    position: static;
+}

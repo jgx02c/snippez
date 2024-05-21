@@ -1,0 +1,51 @@
+.root {}
+
+.spanMain {
+    display: flex;
+    margin: 0em;
+    border: 0px solid #d9d9d9;
+    width: 60em;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.divLeft {
+    display: flex;
+    align-items: start;
+}
+
+.divRight {
+    display: flex;
+    align-items: center;
+}
+
+.imgClass {
+    width: 4em;
+    height: 4em;
+}
+
+.imgCircleClass {
+    width: 3em;
+    height: 3em;
+    border-radius: 10em;
+}
+
+.h4Class {}
+
+.spanClass {
+    display: flex;
+    align-items: center;
+}
+
+.divUpdate {}
+
+.divUpdate {
+    display: flex;
+}
+
+.divText {}
+
+.h6Class {}
+
+.linkClass {}
+
+.divMain {}
