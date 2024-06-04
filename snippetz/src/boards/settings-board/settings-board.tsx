@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import styles from './settings-board.module.scss';
-import { InfoCard } from '../info-card/info-card';
 
 export interface SettingsBoardProps {
     className?: string;
@@ -11,5 +10,5 @@ export interface SettingsBoardProps {
  * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
  */
 export const SettingsBoard = ({ className }: SettingsBoardProps) => {
-    return <div className={classNames(styles.root, className)}><InfoCard /></div>;
+    return <div className={classNames(styles.root, className)}></div>;
 };

@@ -1,50 +1,34 @@
 // controller.d.ts
 
-interface SnippetType {
-  snippetID: number;
-  typeID: string;
-  snippetName: string;
-  snippetDescription: string;
-  snippetCodes: string[];
-  snippetWriteups: string[];
-  snippetPicture: string;
-  snippetDate: string;
-  snippetSource: string;
-  snippetNumberOfProjectsUsed: number;
-}
-
-interface ProjectType {
-  projectID: number;
-  userID: number;
-  status: string;
-  collaboration: boolean;
-  collaborationID: number;
-  uploadDate: string;
-  projectDueDate: string;
-  projectName: string;
-}
+import { ProjectType, LanguageType, SnippetType } from '@/types/types';
 
 
-interface LanguageType {
-  languageID: number;
-  creationDate: string;
-  snippetCount: string;
-}
 
+declare function getAllProjects(): Promise<ProjectType[]>;
+declare function getAllLanguages(): Promise<LanguageType[]>;
+declare function getAllSnippets(): Promise<SnippetType[]>;
+
+declare function getRecentSnippets(): Promise<SnippetType[]>;
+
+declare function getSnippets(language: string): Promise<SnippetType[]>;
 declare function getProjects(): Promise<ProjectType[]>;
-declare function getLanguages() : Promise<LanguageType[]>;
+declare function getLanguages(project: string): Promise<LanguageType[]>;
 
+declare function getSnippet(snippetId: number): Promise<SnippetType[]>;
+declare function getProject(projectName: string): Promise<ProjectType>;
+declare function getLanguage(languageId: number): Promise<LanguageType[]>;
 
-declare function getSnippets(summaryID: number): Promise<SnippetType[]>;
-
-declare function getSnippet(projectId: number): Promise<SnippetType[]>;
-declare function getProject(projectId: number): Promise<ProjectType[]>;
-
+declare function getFilteredSnippets(filter: string, filterType: string): Promise<SnippetType[]>;
+declare function getFilteredProjects(filter: string, filterType: string): Promise<ProjectType[]>;
+declare function getFilteredLanguages(filter: string, filterType: string): Promise<LanguageType[]>;
 
 declare function postCreateSnippet(id: number, localAnalysis: SnippetType[]): Promise<SnippetType[]>;
 declare function postCreateProject(id: number, localAnalysis: ProjectType[]): Promise<ProjectType[]>;
+declare function postAddLanguage(id: number, localAnalysis: LanguageType[]): Promise<ProjectType[]>;
 
-export { getSnippets, getProjects, getProject, getSnippet, getLanguages, };
+export { getAllSnippets, getAllProjects, getAllLanguages, getProject, 
+            getSnippet, getLanguage, getFilteredSnippets, 
+            getFilteredProjects, getFilteredLanguages, getSnippets, getRecentSnippets };
    
 
 

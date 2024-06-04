@@ -1,0 +1,62 @@
+.root {
+    
+}
+
+.buttonClass {
+    height: 2em;
+    width: 2em;
+    margin: 0.25em;
+}
+
+.spanButton {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 12.5em;
+    justify-items: center;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.divLine {
+    height: 1px;
+    background-color: #8B8B8B;
+}
+
+.divMain {
+    width: 12.5em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0em;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5em;
+    background-color: white;
+}
+
+
+
+.divButtonsWrapper {
+    max-height: 10em; /* Adjust the max height as needed */
+    overflow-y: auto;
+  }
+  
+  .divButtons {
+    width: 12.5em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Adjust the gap between icons as needed */
+  }
+  
+
+.inputClass {
+    padding: 0em;
+    margin: 0.5em 0em;
+    height: 2.5em;
+    width: 13.5em;
+}
+
+.divInput {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.25em;
+}

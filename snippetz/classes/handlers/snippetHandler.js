@@ -1,36 +1,73 @@
 /**
- * @file This handles calls for the Projects.
- * @author Joshua Goodman
+ * @file This handles calls for the Snippets.
+ * @autor Joshua Goodman
  */
 
-/*
- * This is an asynchronous GET request for all Projects.
+/**
+ * This is an asynchronous GET request for all Snippets.
  *
+ * @param {number} id - The ID of the project to retrieve snippets for.
  */
 async function getAllSnippets(id) {
-    const response_getAllSnippets = await fetch( `http://127.0.0.1:8000/recordings/` + id);
-    const snippets = response_getAllSnippets.json();
-    console.log( snippets );
-    return snippets;
-  }
+  const response_getAllSnippets = await fetch(`http://localhost:4000/api/snippets/${id}`);
+  const snippets = await response_getAllSnippets.json();
+  console.log(snippets);
+  return snippets;
+}
+
+/**
+ * This is an asynchronous GET request for a single Snippet by ID.
+ *
+ * @param {number} id - The ID of the snippet to retrieve.
+ */
+async function getSnippets(language) {
+  const response_getSnippet = await fetch(`http://localhost:4000/api/snippets/${language}`);
+  const snippet = await response_getSnippet.json();
+  console.log(snippet);
+  return snippet;
+}
+/**
+ * This is an asynchronous GET request for a single Snippet by ID.
+ *
+ * @param {number} id - The ID of the snippet to retrieve.
+ */
+async function getRecentSnippets() {
+  const response_getSnippet = await fetch(`http://localhost:4000/api/recent-snippets`);
+  const snippet = await response_getSnippet.json();
+  console.log(snippet);
+  return snippet;
+}
 
 
-  async function getSnippet( id ) {
-    const response_getSnippet = await fetch( "http://127.0.0.1:8000/recordings/" + id );
-    const project = response_getSnippet.json();
-    console.log( project );
-    return project;
-  }
+/**
+ * This is an asynchronous GET request for a single Snippet by ID.
+ *
+ * @param {number} id - The ID of the snippet to retrieve.
+ */
+async function getSnippet(id) {
+  const response_getSnippet = await fetch(`http://localhost:4000/api/snippets/${id}`);
+  const snippet = await response_getSnippet.json();
+  console.log(snippet);
+  return snippet;
+}
 
-  async function getFilteredSnippets( id, filter) {
-    const response_getFilteredSnippets = await fetch( "http://127.0.0.1:8000/recordings/" + id + filter );
-    const filteredSnippets = response_getFilteredSnippets.json();
-    console.log( filteredSnippets );
-    return filteredSnippets;
-  }
+/**
+ * This is an asynchronous GET request for filtered Snippets.
+ *
+ * @param {string} filter - The attribute to filter by (e.g., 'programmingLanguage', 'snippetName').
+ * @param {string} filterType - The value to filter by.
+ */
+async function getFilteredSnippets(filter, filterType) {
+  const response_getFilteredSnippets = await fetch(`http://localhost:4000/api/snippets/filter/${filter}/${filterType}`);
+  const filteredSnippets = await response_getFilteredSnippets.json();
+  console.log(filteredSnippets);
+  return filteredSnippets;
+}
 
 export {
-    getAllSnippets,
-    getSnippet,
-    getFilteredSnippets,
+  getAllSnippets,
+  getSnippet,
+  getSnippets,
+  getRecentSnippets,
+  getFilteredSnippets,
 };

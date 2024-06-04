@@ -1,81 +1,68 @@
 .root {
-    .divMain {
-        position: relative;
-    }
-
-    .divCenter {
-        /* Center the content vertically and horizontally */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .divButtons {
-        /* Your existing styles for divButtons */
-    }
-
-    .modalOverlay {
-        /* Blur the background */
-        backdrop-filter: blur(8px);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    width:100%;
+  width: 100vh;
+  
+  
 }
 
-.row {
+.divCode{
+
+
+    
+}
+
+.divMain{
+    width: 100%;
+    
+}
+
+.divTop{
     display: flex;
-    margin-bottom: 2em;
-    /* Adjust the margin between rows as needed */
-    margin-right: 2em;
-    margin-left: 2em;
-    margin-top: 2em;
+    flex-direction: column;
 }
 
-.parent-item {
-    width: calc(33.33% - 20px);
-    /* Adjust the width and margin as needed */
-    margin-right: 20px;
-    /* Adjust the margin between child components in the same row */
-    border: 1px solid white;
-    padding: 10px;
+.snippetNameInput{
+    border: 2px solid #d9d9d9;
+    border-radius: .8vh;
+    margin: 1vh;
 }
 
-.spanProjectsBar {
+.snippetDescriptionInput{
+    border: 2px solid #d9d9d9;
+    border-radius: .8vh;
+    margin: 1vh;
+}
+
+.writeUpInput{
+    border: 2px solid #d9d9d9;
+    border-radius: .8vh;
+    margin: 1vh;
+}
+
+.button{
+    border: 2px solid #d9d9d9;
+    border-radius: .8vh;
+    margin: 1vh;
+    padding: .5vh;
+}
+
+.spanButtons{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 4em;
-    padding-right: 4em;
-    height: 4em;
+    flex-direction:row-reverse;
 }
 
-.ProjectWord {
-    font-size: 1.5em;
+
+.divContent{
+    display: flex;
+    flex-direction: column;
 }
 
-.divLeftBar {}
 
-.divRightBar {}
-
-.buttonSearch {
-    margin: 0.25em;
+.divArray{
+    display: flex;
+    flex-direction: column;
 }
 
-.buttonAdjust {
-    margin: 0.25em;
+.divExtra{
+    display: flex;
+    flex-direction:row-reverse;
 }
-
-.buttonCreateNewProject {
-    margin: 0.25em;
-}
-
-.divMain {}

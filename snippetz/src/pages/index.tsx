@@ -3,7 +3,10 @@ import { Inter } from "next/font/google";
 import styles from './index.module.scss';
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { HomeBoard } from "@/boards/home-board/home-board";
+import { ProjectBoard } from "@/boards/project-board/project-board";
+import { SettingsBoard } from "@/boards/settings-board/settings-board";
+import { RecentBoard } from "@/boards/recent-board/recentboard";
+import { HomeBoard } from "@/boards/home-board/home";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,17 +27,13 @@ const Home: React.FC<AppProps> = ({ className }) => {
   const renderComponent = () => {
     switch (currentComponent) {
       case 1:
-        return <HomeBoard />;
+        return <HomeBoard />
       case 2:
-        return <HomeBoard />;
+        return <ProjectBoard />
       case 3:
-        return <HomeBoard />;
+        return <RecentBoard />
       case 4:
-        return <HomeBoard />;
-      case 5:
-        return <HomeBoard />;
-      case 6:
-        return <HomeBoard />;
+        return <SettingsBoard />
       default:
         return null;
     }

@@ -1,34 +1,30 @@
 import classNames from 'classnames';
 import styles from './snippet-card.module.scss';
+import Image from 'next/image'
 
 export interface SnippetCardProps {
     className?: string;
     snippetID: number;
-    typeID: string;
-    snippetName: string;
+    dateCreated: string;
+    lastDateModified: string;
+    programmingLanguage: string;
+    codeArray: string[];
+    writeUp: string[];
     snippetDescription: string;
-    snippetCode: string[];
-    snippetWriteup: string[];
-    snippetPicture: string;
-    snippetDate: string;
     snippetSource: string;
-    snippetNumberOfProjectsUsed: number;
+    snippetSourceLinks: string[];
+    snippetName: string;
 }
 
-/**
- * This component was created using Codux's Default new component template.
- * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
- */
-export const SnippetCard = ({ className, typeID, snippetSource }: SnippetCardProps) => {
+export const SnippetCard = ({ className, snippetID, snippetName, snippetDescription }: SnippetCardProps) => {
     return <div className={classNames(styles.root, className)}>
         <div className={styles.divMain}>
             <span className={styles.spanClass}><div className={styles.divLeft}>
-                <img src="https://wixplosives.github.io/codux-assets-storage/add-panel/image-placeholder.jpg" alt="" className={styles.imgClass} />
-                <h3 className={styles.h3Class}>{typeID}</h3>
-                <h3 className={styles.h3Class}>{snippetSource}</h3></div>
+                
+                </div>
                 <div className={styles.divRight}>
-                    <h1 className={styles.h1Class}>Title</h1>
-                    <p className={styles.paragraphClass}>Summary </p>
+                    <h1 className={styles.h1Class}>{snippetName}</h1>
+                    <p className={styles.paragraphClass}>{snippetDescription} </p>
                 </div>
             </span>
         </div>

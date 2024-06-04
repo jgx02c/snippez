@@ -1,0 +1,89 @@
+.root {
+
+}
+
+.divMain {
+    border: 1px solid #d9d9d9;
+    border-radius: .5em;
+    background-color: #FFFFFF;
+    width: 40em;
+    padding: 1em;
+}
+
+.button{
+    padding: .25em;
+}
+
+.iconButtonClass{
+    margin-left: 1em;
+    margin-top: 0;
+    border: 1px solid #d9d9d9;
+    border-radius: 5%;
+    margin: .5vh;
+    padding: .5vh;
+}
+
+.closeButton {
+    border: none;
+}
+
+.divIcon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 35em;
+    right: 50em;
+    z-index: 3;
+    border-radius: 1em;
+    padding: 1em 1em;
+    width: 12em;
+  
+    &::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        right: 20px;
+        height: 20px;
+        width: 20px;
+        background: var(--secondary-bg);
+        transform: rotate(45deg);
+    }
+  
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition: var(--speed) ease;
+    }
+  
+    &.inactive {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: var(--speed) ease;
+    }
+}
+
+
+.descriptionTextArea {
+    background-color: #FFFFFF;
+    border-color: #d9d9d9;
+    margin: 1vh;
+    height: 4vh;
+    display: flex;
+    width: 100%;
+    border-radius: 0.5em;
+    border: 1px solid #d9d9d9;
+}
+
+.divLine {
+    background-color: #d9d9d9;
+    height: 1px;
+}
+  

@@ -1,21 +1,21 @@
 import classNames from 'classnames';
 import styles from './language-card.module.scss';
+import { LanguageType } from '@/types/types';
 
 export interface LanguageCardProps {
     className?: string;
+    languageID: number;
+    languageName: string;
+    languageIcon: string;
+    languageSnippetCount: number;
 }
 
-/**
- * This component was created using Codux's Default new component template.
- * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
- */
-export const LanguageCard = ({ className }: LanguageCardProps) => {
+export const LanguageCard = ({ className, languageID, languageSnippetCount, languageIcon, languageName }: LanguageCardProps) => {
     return <div className={classNames(styles.root, className)}>
     <div className={styles.divMain}>
-        <img src="https://wixplosives.github.io/codux-assets-storage/add-panel/image-placeholder.jpg" alt="" className={styles.imgLogo} />
-        <h1 className={styles.h1Class}>Language</h1>
-        <h1 className={styles.h1Class}># of Snippets</h1>
+        <img src={languageIcon} alt="" className={styles.imgLogo} />
+        <h1 className={styles.h1Class}>{languageName}</h1>
+        <h1 className={styles.h1Class}>{languageSnippetCount}</h1>
     </div>
 </div>;
 };
-

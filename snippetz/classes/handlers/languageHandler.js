@@ -3,34 +3,44 @@
  * @author Joshua Goodman
  */
 
-/*
- * This is an asynchronous GET request for all Projects.
+/**
+ * This is an asynchronous GET request for all Languages.
  *
  */
-async function getLanguages() {
-    const response_getAllLanguages = await fetch( "http://127.0.0.1:8000/languages/" );
-    const languages = response_getAllLanguages.json();
-    console.log( languages );
-    return languages;
-  }
+async function getAllLanguages() {
+  const response_getAllLanguages = await fetch("http://localhost:4000/api/languages");
+  const languages = await response_getAllLanguages.json();
+  console.log(languages);
+  return languages;
+}
 
+/**
+ * This is an asynchronous GET request for a single Language by ID.
+ *
+ * @param {number} id - The ID of the language to retrieve.
+ */
+async function getLanguage(id) {
+  const response_getLanguage = await fetch(`http://localhost:4000/api/languages/${id}`);
+  const language = await response_getLanguage.json();
+  console.log(language);
+  return language;
+}
 
-  async function getLanguage( id ) {
-    const response_getLanguage = await fetch( "http://127.0.0.1:8000/language/" + id );
-    const language = response_getLanguage.json();
-    console.log( language );
-    return language;
-  }
-
-  async function getFilteredLanguages( id, filter) {
-    const response_getFilteredLanguages = await fetch( "http://127.0.0.1:8000/filteredlanguages/" + id + filter );
-    const filteredProjects = response_getFilteredLanguages.json();
-    console.log( filteredProjects );
-    return filteredProjects;
-  }
+/**
+ * This is an asynchronous GET request for filtered Languages.
+ *
+ * @param {string} filter - The attribute to filter by (e.g., 'name', 'snippetCount').
+ * @param {string} filterType - The value to filter by.
+ */
+async function getFilteredLanguages(filter, filterType) {
+  const response_getFilteredLanguages = await fetch(`http://localhost:4000/api/languages/filter/${filter}/${filterType}`);
+  const filteredLanguages = await response_getFilteredLanguages.json();
+  console.log(filteredLanguages);
+  return filteredLanguages;
+}
 
 export {
-    getLanguages,
-    getLanguage,
-    getFilteredLanguages,
+  getAllLanguages,
+  getLanguage,
+  getFilteredLanguages,
 };
