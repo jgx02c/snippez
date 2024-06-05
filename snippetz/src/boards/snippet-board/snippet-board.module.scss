@@ -1,68 +1,71 @@
 .root {
-  width: 100vh;
+    width: 100vh;
+    height: 90vh; /* Adjust as needed to fit your layout */
+    overflow: hidden; /* To ensure it doesn’t overflow the parent container */
+  }
   
-  
-}
-
-.divCode{
-
-
-    
-}
-
-.divMain{
+  .divMain {
     width: 100%;
-    
-}
+    height: 100%; /* To take the full height of the root */
+    overflow-y: auto; /* Enables vertical scrolling */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
-.divTop{
+  .divContent::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  
+  .divTop {
     display: flex;
     flex-direction: column;
-}
-
-.snippetNameInput{
+  }
+  
+  .snippetNameInput {
     border: 2px solid #d9d9d9;
-    border-radius: .8vh;
+    border-radius: 0.8vh;
     margin: 1vh;
-}
-
-.snippetDescriptionInput{
+  }
+  
+  .snippetDescriptionInput {
     border: 2px solid #d9d9d9;
-    border-radius: .8vh;
+    border-radius: 0.8vh;
     margin: 1vh;
-}
-
-.writeUpInput{
+  }
+  
+  .writeUpInput {
     border: 2px solid #d9d9d9;
-    border-radius: .8vh;
+    border-radius: 0.8vh;
     margin: 1vh;
-}
-
-.button{
+  }
+  
+  .button {
     border: 2px solid #d9d9d9;
-    border-radius: .8vh;
+    border-radius: 0.8vh;
     margin: 1vh;
-    padding: .5vh;
-}
-
-.spanButtons{
+    padding: 0.5vh;
+  }
+  
+  .spanButtons {
     display: flex;
-    flex-direction:row-reverse;
-}
-
-
-.divContent{
-    display: flex;
-    flex-direction: column;
-}
-
-
-.divArray{
+    flex-direction: row-reverse;
+  }
+  
+  .divContent {
     display: flex;
     flex-direction: column;
-}
 
-.divExtra{
+   
+  }
+  
+  .divArray {
     display: flex;
-    flex-direction:row-reverse;
-}
+    flex-direction: column;
+  }
+  
+  .divExtra {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  

@@ -6,6 +6,7 @@ import { LanguageCard } from '@/components/language-card/language-card';
 import { AddLanguage } from '@/popups/add-language/add-language';
 import { SnippetsLanguagesBoard } from '@/boards/snippet-language-board/snippets-language-board';
 import { LanguageType } from '@/types/types';
+import { CreateLanguage } from '@/popups/create-language/createlanguage';
 
 export interface LanguagesBoardProps {
   className?: string;
@@ -51,7 +52,6 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
 
   return (
     <div className={classNames(styles.root, className)}>
-      
       {selectedLanguage ? (
         <SnippetsLanguagesBoard 
         onClose={() => setSelectedLanguage(null)}
@@ -65,7 +65,7 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
             <h1>Programming Languages</h1>
           </div>
           <div className={styles.right}>
-            <button className={styles.button} onClick={handleCreateLanguageClick}>Add language</button>
+            <button className={styles.button} onClick={handleCreateLanguageClick}>Add Language</button>
           </div>
         </span>
       </div>
@@ -87,7 +87,7 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
           ))}
           {isCreateLanguageClicked && (
             <div className={styles.modalOverlay}>
-              <AddLanguage
+              <CreateLanguage
                 onClose={handleCloseCreateLanguage}
               />
             </div>

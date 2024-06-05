@@ -4,55 +4,43 @@
     margin: 2vh;
 }
 
-.imgLogo {
-    height: 15em;
-    width: 5em;
-}
-
 .divMain {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    align-content: space-between;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid black;
-    border-radius: 1em;
-    margin: 0em 1em;
+    border-radius: 2vh;
 }
 
 .h1Class {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
     font-size: 1em;
-}
-
-.spanClass {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.imgClass {
-    width: 5em;
-    height: 5em;
+.h6Class{
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    font-size: 1.5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
-
-.h1Class {}
 
 .paragraphClass {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1vh;
+    margin-right: 1vh;
     font-size: 0.5em;
-}
-
-.divRight {
-    width: 75%;
-    margin: 1em;
-}
-
-.divLeft {
-    width: 25%;
-    margin: 1em;
-    line-height: .5;
-}
-
-.h3Class {
-    font-size: 1em;
 }

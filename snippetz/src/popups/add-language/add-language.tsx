@@ -1,87 +1,66 @@
 import classNames from 'classnames';
 import styles from './add-language.module.scss';
-import React, { useState } from 'react';
-import IconDropdownMenu from '@/components/icon-menu/iconmenu';
+import React, { useState, useEffect } from 'react';
 import Close from '@/styles/icons/X.svg'
-import Image from 'next/image'
+import Image from 'next/image';
 
-export interface InsightExpandedProps {
-    className?: string;
-    onClose: () => void;
+export interface AddLanguageProps {
+  className?: string;
+  onClose: () => void;
+  onSelectLanguage: (language: any) => void;
 }
 
-export const AddLanguage: React.FC<InsightExpandedProps> = ({ className, onClose }) => {
-    const [open, setOpen] = useState(false);
-    const [languageName, setLanguageName] = useState("");
-    const [languageIcon, setLanguageIcon] = useState("");
+export const AddLanguage: React.FC<AddLanguageProps> = ({ className, onClose, onSelectLanguage }) => {
+  const [languages, setLanguages] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-    const handleDropdownToggle = () => {
-        setOpen(!open);
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/languages');
+        const data = await response.json();
+        setLanguages(data);
+      } catch (err) {
+        setError('Failed to fetch languages');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleIconSelect = (icon: string) => {
-        setLanguageIcon(icon); // Set only the src property
-        setOpen(false);
-    };
+    fetchLanguages();
+  }, []);
 
-    const handleAddLanguage = async () => {
-        const languageID = new Date().getTime(); // Use current date and time as ID
-        const languageSnippetCount = 0;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-        const newLanguage = {
-            languageID,
-            languageName,
-            languageIcon: "/icons/icon1.svg", // Test with a static string value
-            languageSnippetCount
-        };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-        try {
-            const response = await fetch('http://localhost:4000/api/languages/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newLanguage) // Send the newLanguage object directly
-            });
-
-            if (response.ok) {
-                onClose(); // Close the modal after successful creation
-            } else {
-                const errorText = await response.text();
-                console.error('Error:', errorText);
-                alert(`Error: ${errorText}`);
-            }
-        } catch (error) {
-            console.error('Error creating language:', error);
-            alert('An error occurred while creating the language');
-        }
-    };
-
-    return (
-        <div className={classNames(styles.root, className)}>
-            <div className={styles.divMain}>
-                <button onClick={onClose} className={styles.closeButton}>
-                    <Image src={Close} height={24} width={24} alt="Close" />
-                </button>
-                <div className={styles.divLine}></div>
-                <h1>Language Name</h1>
-                <textarea
-                    className={styles.descriptionTextArea}
-                    value={languageName}
-                    onChange={(e) => setLanguageName(e.target.value)}
-                />
-                <h1>Language Icon</h1>
-                <div className={styles.divIcon}>
-                    <button className={styles.iconButtonClass} onClick={handleDropdownToggle}>Select Icon</button>
-                    {open && (
-                        <div className={styles.dropdownMenu}>
-                            <IconDropdownMenu onSelectIcon={handleIconSelect} />
-                        </div>
-                    )}
-                </div>
-                <div className={styles.divLine}></div>
-                <button className={styles.button} onClick={handleAddLanguage}>Add</button>
+  return (
+    <div className={classNames(styles.root, className)}>
+      <div className={styles.divMain}>
+        <button onClick={onClose} className={styles.closeButton}>
+          <Image src={Close} height={24} width={24} alt="Close" />
+        </button>
+        <div className={styles.divLine}></div>
+        <h1>Select Language</h1>
+        <div className={styles.languagesGrid}>
+          {languages.map((language, index) => (
+            <div
+              key={index}
+              className={styles.languageItem}
+              onClick={() => onSelectLanguage(language)}
+            >
+              <img src={language.languageIcon} alt={language.languageName} />
+              <p>{language.languageName}</p>
             </div>
+          ))}
         </div>
-    );
+        <div className={styles.divLine}></div>
+      </div>
+    </div>
+  );
 };

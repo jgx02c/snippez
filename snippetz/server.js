@@ -275,6 +275,25 @@ app.put('/api/snippets/update/:snippetID', async (req, res) => {
   }
 });
 
+// Endpoint to update a project with a new language
+app.put('/api/projects/update/:projectID', async (req, res) => {
+  const { projectID } = req.params;
+  const updatedProject = req.body;
+
+  try {
+    const project = await Project.findOneAndUpdate({ projectID: parseInt(projectID) }, updatedProject, { new: true });
+
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
+
+    res.status(200).send('Project updated successfully');
+  } catch (err) {
+    console.error('Error updating project:', err);
+    res.status(500).send('Error updating project');
+  }
+});
+
 
 // Endpoint to create a new snippet
 app.post('/api/snippets/create', async (req, res) => {

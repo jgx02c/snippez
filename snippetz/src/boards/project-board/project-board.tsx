@@ -51,19 +51,21 @@ export const ProjectBoard: React.FC<projectsBoardProps> = ({ className }: projec
 
   return (
     <div className={classNames(styles.root, className)}>
-      <div className={styles.top}>
+    
+      {selectedProject ? (
+        <SnippetProjectBoard selectedProjectName={selectedProject.projectName} onClose={() => setSelectedProject(null)} />
+      ) : (
+        <>
+        <div className={styles.top}>
         <span className={styles.spanTop}>
           <div className={styles.left}>
             <h1>Programming projects</h1>
           </div>
           <div className={styles.right}>
-            <button className={styles.button} onClick={handleCreateProjectClick}>Add project</button>
+            <button className={styles.button} onClick={handleCreateProjectClick}>Create Project</button>
           </div>
         </span>
       </div>
-      {selectedProject ? (
-        <SnippetProjectBoard selectedProjectName={selectedProject.projectName} />
-      ) : (
         <div className={styles.content}>
           {projects.map((project, index) => (
             <div
@@ -91,6 +93,7 @@ export const ProjectBoard: React.FC<projectsBoardProps> = ({ className }: projec
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

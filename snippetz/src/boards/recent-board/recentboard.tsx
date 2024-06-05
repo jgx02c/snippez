@@ -46,18 +46,9 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
 
   return (
     <div className={classNames(styles.root, className)}>
-      <div className={styles.top}>
-        <span className={styles.spanTop}>
-          <div className={styles.left}>
-            <h1>Recent Snippets</h1>
-          </div>
-        </span>
-      </div>
       {selectedSnippet ? (
         <SnippetBoard
-          onClose={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onClose={() => setSelectedSnippet(null)}
           snippetID={selectedSnippet.snippetID} 
           dateCreated={selectedSnippet.dateCreated} 
           lastDateModified={selectedSnippet.lastDateModified} 
@@ -69,7 +60,17 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
           snippetSourceLinks={selectedSnippet.snippetSourceLinks} 
           snippetName={selectedSnippet.snippetName}   
         />
+         
       ) : (
+        <>
+        <div className={styles.top}>
+     <span className={styles.spanTop}>
+     <div className={styles.left}>
+       <h1 className={styles.h1Class}>Recent Snippets</h1>
+     </div>
+   </span>
+   </div>
+  
         <div className={styles.content}>
           {snippets.map((snippet, index) => (
             <div key={index} className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
@@ -93,6 +94,7 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

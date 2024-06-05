@@ -6,17 +6,45 @@ import { LanguageCard } from '@/components/language-card/language-card';
 import { SnippetCard } from '@/components/snippet-card/snippet-card';
 import { ProjectType, SnippetType, LanguageType } from '@/types/types';
 import { SnippetBoard } from '../snippet-board/snippet-board';
+import { CreateSnippet } from '@/popups/create-snippet/create-snippet';
+import { AddLanguage } from '@/popups/add-language/add-language';
+import { SnippetLanguageProjectBoard } from '@/boards/snippet-language-project-board/snippetlanguageprojectboard';
+import { AddSnippet } from '@/popups/add-snippet/addsnippet';
 
-export interface projectsBoardProps {
+export interface ProjectsBoardProps {
   className?: string;
   selectedProjectName: string;
+  onClose: () => void;
 }
 
-export const SnippetProjectBoard: React.FC<projectsBoardProps> = ({ className, selectedProjectName }: projectsBoardProps) => {
+type ComponentType = 1 | 2 | 3;
+
+export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, selectedProjectName, onClose }: ProjectsBoardProps) => {
   const [project, setProject] = useState<ProjectType | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [selectedSnippet, setSelectedSnippet] = useState<SnippetType | null>(null);
-  const [isCreateSnippetClicked, setCreateSnippetClicked] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+  const [currentComponent, setCurrentComponent] = useState<ComponentType | null>(null);
+
+  const handleButtonClick = (componentNumber: ComponentType) => {
+    setCurrentComponent(componentNumber);
+  };
+
+  const renderComponent = () => {
+    switch (currentComponent) {
+      case 1:
+        return <AddLanguage onClose={handleClosePopup} onSelectLanguage={handleLanguageCardClick} />;
+      case 2:
+        return <AddSnippet onClose={handleClosePopup} onAddSnippets={(snippets) => {
+          // handle added snippets
+          handleClosePopup();
+        }} />;
+      case 3:
+        return <CreateSnippet onClose={handleClosePopup} />;
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -37,22 +65,31 @@ export const SnippetProjectBoard: React.FC<projectsBoardProps> = ({ className, s
     setSelectedSnippet(snippet);
   };
 
+  const handleLanguageCardClick = (language: string) => {
+    setSelectedLanguage(language);
+  };
+
+  const handleClosePopup = () => {
+    setCurrentComponent(null);
+  };
+
+  const handleCloseLanguageBoard = () => {
+    setSelectedLanguage(null);
+  };
+
+  const handleCloseSnippetBoard = () => {
+    setSelectedSnippet(null);
+  };
+
   if (project === undefined) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className={classNames(styles.root, className)}>
-      <div className={styles.top}>
-        <span className={styles.spanTop}>
-          <div className={styles.left}>
-            <h1>{project.projectName} - Languages and Snippets</h1>
-          </div>
-        </span>
-      </div>
       {selectedSnippet ? (
         <SnippetBoard
-          onClose={() => setSelectedSnippet(null)}
+          onClose={handleCloseSnippetBoard}
           snippetID={selectedSnippet.snippetID}
           dateCreated={selectedSnippet.dateCreated}
           lastDateModified={selectedSnippet.lastDateModified}
@@ -64,52 +101,76 @@ export const SnippetProjectBoard: React.FC<projectsBoardProps> = ({ className, s
           snippetSourceLinks={selectedSnippet.snippetSourceLinks}
           snippetName={selectedSnippet.snippetName}
         />
+      ) : selectedLanguage ? (
+        <SnippetLanguageProjectBoard
+          selectedLanguage={selectedLanguage}
+          onClose={handleCloseLanguageBoard}
+        />
       ) : (
-        <div className={styles.content}>
-          <div className={styles.languagesRow}>
-            {project.projectSnippets.map((projectSnippet, index) => {
-              const { language } = projectSnippet;
-              if (language) {
-                return (
-                  <LanguageCard
-                    key={index}
-                    languageID={language.languageID}
-                    languageName={language.languageName}
-                    languageIcon={language.languageIcon}
-                    languageSnippetCount={language.languageSnippetCount}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })}
+        <>
+          <div className={styles.top}>
+            <button onClick={onClose}>Close</button>
+            <span className={styles.spanTop}>
+              <h1 className={styles.h1Class}>{project.projectName}</h1>
+              <div className={styles.ButtonDiv}>
+                <button className={styles.Buttons} onClick={() => handleButtonClick(1)}>Add Language</button>
+                <button className={styles.Buttons} onClick={() => handleButtonClick(2)}>Add Snippet</button>
+                <button className={styles.Buttons} onClick={() => handleButtonClick(3)}>Create Snippet</button>
+              </div>
+            </span>
           </div>
-          <div className={styles.snippetsGrid}>
-            {project.projectSnippets.flatMap((projectSnippet) =>
-              projectSnippet.snippets.map((snippet, index) => (
-                <div key={index} className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
-                  <SnippetCard
-                    snippetID={snippet.snippetID}
-                    dateCreated={snippet.dateCreated}
-                    lastDateModified={snippet.lastDateModified}
-                    programmingLanguage={snippet.programmingLanguage}
-                    codeArray={snippet.codeArray}
-                    writeUp={snippet.writeUp}
-                    snippetDescription={snippet.snippetDescription}
-                    snippetSource={snippet.snippetSource}
-                    snippetSourceLinks={snippet.snippetSourceLinks}
-                    snippetName={snippet.snippetName}
-                  />
-                </div>
-              ))
-            )}
+          <div className={styles.content}>
+            <div className={styles.languagesRow}>
+              {project.projectSnippets.map((projectSnippet, index) => {
+                const { language } = projectSnippet;
+                if (language) {
+                  return (
+                    <div
+                      key={index}
+                      className={styles.parentItem}
+                      onClick={() => handleLanguageCardClick(language.languageName)}
+                    >
+                      <LanguageCard
+                        key={index}
+                        languageID={language.languageID}
+                        languageName={language.languageName}
+                        languageIcon={language.languageIcon}
+                        languageSnippetCount={language.languageSnippetCount}
+                      />
+                    </div>
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </div>
+            <div className={styles.snippetsGrid}>
+              {project.projectSnippets.flatMap((projectSnippet) =>
+                projectSnippet.snippets.map((snippet, index) => (
+                  <div key={index} className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
+                    <SnippetCard
+                      snippetID={snippet.snippetID}
+                      dateCreated={snippet.dateCreated}
+                      lastDateModified={snippet.lastDateModified}
+                      programmingLanguage={snippet.programmingLanguage}
+                      codeArray={snippet.codeArray}
+                      writeUp={snippet.writeUp}
+                      snippetDescription={snippet.snippetDescription}
+                      snippetSource={snippet.snippetSource}
+                      snippetSourceLinks={snippet.snippetSourceLinks}
+                      snippetName={snippet.snippetName}
+                    />
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-          {isCreateSnippetClicked && (
+          {currentComponent !== null && (
             <div className={styles.modalOverlay}>
-              {/* Add your modal component for creating a new snippet here */}
+              {renderComponent()}
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );

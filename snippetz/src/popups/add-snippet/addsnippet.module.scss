@@ -13,13 +13,23 @@
     width: 400px;
     max-height: 80vh;
     overflow-y: auto;
+    position: relative;
   }
   
-  .closeButton {
+  .closeButton,
+  .backButton {
     background: none;
     border: none;
     position: absolute;
-
+    top: 10px;
+  }
+  
+  .closeButton {
+    right: 10px;
+  }
+  
+  .backButton {
+    left: 10px;
   }
   
   .divLine {
@@ -28,13 +38,15 @@
     margin: 20px 0;
   }
   
-  .languagesGrid {
+  .languagesGrid,
+  .snippetsGrid {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
   
-  .languageItem {
+  .languageItem,
+  .snippetItem {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,7 +61,22 @@
     height: 50px;
   }
   
-  .languageItem p {
+  .languageItem p,
+  .snippetItem p {
     margin-top: 10px;
+  }
+  
+  .snippetItem.selected {
+    background-color: #d9d9d9;
+  }
+  
+  .addButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
   

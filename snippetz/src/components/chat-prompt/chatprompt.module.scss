@@ -1,0 +1,19 @@
+// src/components/ChatPrompt.module.scss
+.chatPrompt {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chatPrompt input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .chatPrompt button {
+    margin-left: 10px;
+    padding: 10px 20px;
+  }
+  

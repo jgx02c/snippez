@@ -16,17 +16,14 @@ export interface SnippetCardProps {
     snippetName: string;
 }
 
-export const SnippetCard = ({ className, snippetID, snippetName, snippetDescription }: SnippetCardProps) => {
+export const SnippetCard = ({ className, snippetID, snippetName, snippetDescription, lastDateModified }: SnippetCardProps) => {
     return <div className={classNames(styles.root, className)}>
-        <div className={styles.divMain}>
-            <span className={styles.spanClass}><div className={styles.divLeft}>
-                
-                </div>
-                <div className={styles.divRight}>
-                    <h1 className={styles.h1Class}>{snippetName}</h1>
-                    <p className={styles.paragraphClass}>{snippetDescription} </p>
-                </div>
-            </span>
+        <div className={styles.divMain}>   
+            <div>
+                <h1 className={styles.h1Class}>{snippetName}</h1>
+                <p className={styles.paragraphClass}>{snippetDescription} </p>
+            </div>
+                <h6 className={styles.h6Class}>Last Modified: {lastDateModified}</h6>
         </div>
     </div>;
 };
