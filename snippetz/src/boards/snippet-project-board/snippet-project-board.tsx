@@ -40,7 +40,7 @@ export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, s
           handleClosePopup();
         }} />;
       case 3:
-        return <CreateSnippet onClose={handleClosePopup} />;
+        return <CreateSnippet onClose={handleClosePopup} programmingLanguage='' />;
       default:
         return null;
     }

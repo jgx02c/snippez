@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import styles from './createlanguage.module.scss';
 import React, { useState } from 'react';
 import IconDropdownMenu from '@/components/icon-menu/iconmenu';
-import Close from '@/styles/icons/X.svg'
-import Image from 'next/image'
+import Close from '@/styles/icons/X.svg';
+import Image from 'next/image';
+import { createLanguage } from '../../../classes/controller.js'; // Adjust the import path as necessary
 
 export interface InsightExpandedProps {
     className?: string;
@@ -31,26 +32,13 @@ export const CreateLanguage: React.FC<InsightExpandedProps> = ({ className, onCl
         const newLanguage = {
             languageID,
             languageName,
-            languageIcon: "/icons/icon1.svg", // Test with a static string value
+            languageIcon, // Use the selected icon
             languageSnippetCount
         };
 
         try {
-            const response = await fetch('http://localhost:4000/api/languages/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newLanguage) // Send the newLanguage object directly
-            });
-
-            if (response.ok) {
-                onClose(); // Close the modal after successful creation
-            } else {
-                const errorText = await response.text();
-                console.error('Error:', errorText);
-                alert(`Error: ${errorText}`);
-            }
+            await createLanguage(newLanguage);
+            onClose(); // Close the modal after successful creation
         } catch (error) {
             console.error('Error creating language:', error);
             alert('An error occurred while creating the language');

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import styles from './snippet-board.module.scss';
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-javascript';  // Adjust mode as needed
+import 'ace-builds/src-noconflict/mode-javascript'; // Adjust mode as needed
 import 'ace-builds/src-noconflict/theme-github';
 import * as controller from '../../../classes/controller.js';
 
@@ -108,6 +108,22 @@ export const SnippetBoard = ({
         }
     };
 
+    const handleDeleteSnippet = async () => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this snippet?');
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+            await controller.deleteSnippet(snippetID, programmingLanguage);
+            alert('Snippet deleted successfully!');
+            onClose(); // Close the modal after deletion
+        } catch (error) {
+            console.error('Error deleting snippet:', error);
+            alert('Error deleting snippet.');
+        }
+    };
+
     const handleClose = () => {
         if (hasUnsavedChanges) {
             const confirmClose = window.confirm('You have unsaved changes. Are you sure you want to close?');
@@ -132,6 +148,7 @@ export const SnippetBoard = ({
         <div className={classNames(styles.root, className)}>
             <div className={styles.divMain}>
                 <button onClick={handleClose}>Close</button>
+                <button onClick={handleDeleteSnippet} className={styles.deleteButton}>Delete Snippet</button>
                 <div className={styles.divTop}>
                     <input
                         className={styles.snippetNameInput}

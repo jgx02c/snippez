@@ -1,11 +1,10 @@
 /**
  * @file This handles calls for the Languages.
- * @author Joshua Goodman
+ * @autor Joshua Goodman
  */
 
 /**
  * This is an asynchronous GET request for all Languages.
- *
  */
 async function getAllLanguages() {
   const response_getAllLanguages = await fetch("http://localhost:4000/api/languages");
@@ -17,10 +16,10 @@ async function getAllLanguages() {
 /**
  * This is an asynchronous GET request for a single Language by ID.
  *
- * @param {number} id - The ID of the language to retrieve.
+ * @param {number} languageId - The ID of the language to retrieve.
  */
-async function getLanguage(id) {
-  const response_getLanguage = await fetch(`http://localhost:4000/api/languages/${id}`);
+async function getLanguage(languageId) {
+  const response_getLanguage = await fetch(`http://localhost:4000/api/languages/${languageId}`);
   const language = await response_getLanguage.json();
   console.log(language);
   return language;
@@ -39,8 +38,27 @@ async function getFilteredLanguages(filter, filterType) {
   return filteredLanguages;
 }
 
+/**
+ * This is an asynchronous POST request to create a new Language.
+ *
+ * @param {Object} data - The data for the new language.
+ */
+async function createLanguage(data) {
+  const response_createLanguage = await fetch(`http://localhost:4000/api/languages/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const newLanguage = await response_createLanguage.json();
+  console.log(newLanguage);
+  return newLanguage;
+}
+
 export {
   getAllLanguages,
   getLanguage,
   getFilteredLanguages,
+  createLanguage,
 };

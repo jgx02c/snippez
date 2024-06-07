@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Close from '@/styles/icons/X.svg';
 import Image from 'next/image';
 import ArrowBack from '@/styles/icons/X.svg';
+import { getAllLanguages, getSnippets } from '../../../classes/controller.js'; // Adjust the import path as necessary
 
 export interface AddSnippetProps {
   className?: string;
@@ -21,8 +22,7 @@ export const AddSnippet: React.FC<AddSnippetProps> = ({ className, onClose, onAd
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/languages');
-        const data = await response.json();
+        const data = await getAllLanguages();
         setLanguages(data);
       } catch (err) {
         console.error('Failed to fetch languages', err);
@@ -36,8 +36,7 @@ export const AddSnippet: React.FC<AddSnippetProps> = ({ className, onClose, onAd
     if (selectedLanguage) {
       const fetchSnippets = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/api/snippets/${selectedLanguage}`);
-          const data = await response.json();
+          const data = await getSnippets(selectedLanguage);
           setSnippets(data);
         } catch (err) {
           console.error('Failed to fetch snippets', err);

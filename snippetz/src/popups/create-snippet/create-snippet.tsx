@@ -1,78 +1,103 @@
 import classNames from 'classnames';
 import styles from './create-snippet.module.scss';
 import React, { useState } from 'react';
-import IconDropdownMenu from '@/components/icon-menu/iconmenu';
 import Close from '@/styles/icons/X.svg';
 import Image from 'next/image';
+import { createSnippet } from '../../../classes/controller.js'; // Adjust the import path as necessary
 
 export interface CreateSnippetProps {
   className?: string;
   onClose: () => void;
+  programmingLanguage?: string; // Optional prop to autofill the programming language
 }
 
-export const CreateSnippet = ({ className, onClose }: CreateSnippetProps) => {
-  const [open, setOpen] = useState(false);
-  const [snippetName, setSnippetName] = useState("");
-  const [dateCreated, setDateCreated] = useState("");
-  const [lastDateModified, setLastDateModified] = useState("");
-  const [programmingLanguage, setProgrammingLanguage] = useState("");
-  const [codeArray, setCodeArray] = useState<string[]>([""]);
-  const [writeUp, setWriteUp] = useState<string[]>([""]);
-  const [snippetDescription, setSnippetDescription] = useState("");
-  const [snippetSource, setSnippetSource] = useState("");
-  const [snippetSourceLinks, setSnippetSourceLinks] = useState<string[]>([""]);
+interface SnippetState {
+  snippetName: string;
+  programmingLanguage: string;
+  codeArray: string[];
+  writeUp: string[];
+  snippetDescription: string;
+  snippetSource: string;
+  snippetSourceLinks: string[];
+}
 
-  const handleDropdownToggle = () => {
-    setOpen(!open);
-  };
+export const CreateSnippet = ({ className, onClose, programmingLanguage = '' }: CreateSnippetProps) => {
+  const [snippetState, setSnippetState] = useState<SnippetState>({
+    snippetName: "",
+    programmingLanguage: programmingLanguage,
+    codeArray: [""],
+    writeUp: [""],
+    snippetDescription: "",
+    snippetSource: "",
+    snippetSourceLinks: [""]
+  });
+
+  const [history, setHistory] = useState<SnippetState[]>([]);
 
   const handleAddSnippet = async () => {
     const snippetID = new Date().getTime(); // Use current date and time as ID
+    const dateCreated = new Date().toISOString();
+    const lastDateModified = new Date().toISOString();
+
     const newSnippet = {
       snippetID,
       dateCreated,
       lastDateModified,
-      programmingLanguage,
-      codeArray,
-      writeUp,
-      snippetDescription,
-      snippetSource,
-      snippetSourceLinks,
-      snippetName
+      ...snippetState
     };
 
     try {
-      const response = await fetch('http://localhost:4000/api/snippets/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newSnippet)
-      });
-
-      if (response.ok) {
-        onClose(); // Close the modal after successful creation
-      } else {
-        const errorText = await response.text();
-        console.error('Error:', errorText);
-        alert(`Error: ${errorText}`);
-      }
+      await createSnippet(newSnippet);
+      onClose(); // Close the modal after successful creation
     } catch (error) {
       console.error('Error creating snippet:', error);
       alert('An error occurred while creating the snippet');
     }
   };
 
-  const handleAddField = (setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-    setter(prev => [...prev, ""]);
+  const saveToHistory = () => {
+    setHistory(prev => [...prev, { ...snippetState }]);
   };
 
-  const handleFieldChange = (index: number, value: string, setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-    setter(prev => {
-      const newValues = [...prev];
+  const handleUndo = () => {
+    if (history.length > 0) {
+      const previousState = history[history.length - 1];
+      setSnippetState(previousState);
+      setHistory(history.slice(0, -1));
+    }
+  };
+
+  const handleAddField = (field: keyof SnippetState) => {
+    saveToHistory();
+    setSnippetState(prev => ({
+      ...prev,
+      [field]: [...(prev[field] as string[]), ""]
+    }));
+  };
+
+  const handleDeleteField = (field: keyof SnippetState, index: number) => {
+    saveToHistory();
+    setSnippetState(prev => ({
+      ...prev,
+      [field]: (prev[field] as string[]).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleFieldChange = (field: keyof SnippetState, index: number, value: string) => {
+    saveToHistory();
+    setSnippetState(prev => {
+      const newValues = [...(prev[field] as string[])];
       newValues[index] = value;
-      return newValues;
+      return { ...prev, [field]: newValues };
     });
+  };
+
+  const handleInputChange = (field: keyof SnippetState, value: string) => {
+    saveToHistory();
+    setSnippetState(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
@@ -83,73 +108,67 @@ export const CreateSnippet = ({ className, onClose }: CreateSnippetProps) => {
         <h1>Snippet Name</h1>
         <textarea
           className={styles.descriptionTextArea}
-          value={snippetName}
-          onChange={(e) => setSnippetName(e.target.value)}
-        />
-        <h1>Date Created</h1>
-        <input
-          type="date"
-          className={styles.descriptionTextArea}
-          value={dateCreated}
-          onChange={(e) => setDateCreated(e.target.value)}
-        />
-        <h1>Last Date Modified</h1>
-        <input
-          type="date"
-          className={styles.descriptionTextArea}
-          value={lastDateModified}
-          onChange={(e) => setLastDateModified(e.target.value)}
+          value={snippetState.snippetName}
+          onChange={(e) => handleInputChange("snippetName", e.target.value)}
         />
         <h1>Programming Language</h1>
         <textarea
           className={styles.descriptionTextArea}
-          value={programmingLanguage}
-          onChange={(e) => setProgrammingLanguage(e.target.value)}
+          value={snippetState.programmingLanguage}
+          onChange={(e) => handleInputChange("programmingLanguage", e.target.value)}
+          readOnly={!!programmingLanguage} // Make read-only if programmingLanguage is provided
         />
         <h1>Code</h1>
-        {codeArray.map((code, index) => (
-          <textarea
-            key={index}
-            className={styles.descriptionTextArea}
-            value={code}
-            onChange={(e) => handleFieldChange(index, e.target.value, setCodeArray)}
-          />
+        {snippetState.codeArray.map((code, index) => (
+          <div key={index} className={styles.fieldContainer}>
+            <textarea
+              className={styles.descriptionTextArea}
+              value={code}
+              onChange={(e) => handleFieldChange("codeArray", index, e.target.value)}
+            />
+            <button className={styles.deleteButton} onClick={() => handleDeleteField("codeArray", index)}>Delete</button>
+          </div>
         ))}
-        <button onClick={() => handleAddField(setCodeArray)}>Add More Code</button>
+        <button className={styles.addButton} onClick={() => handleAddField("codeArray")}>Add More Code</button>
         <h1>Write Up</h1>
-        {writeUp.map((write, index) => (
-          <textarea
-            key={index}
-            className={styles.descriptionTextArea}
-            value={write}
-            onChange={(e) => handleFieldChange(index, e.target.value, setWriteUp)}
-          />
+        {snippetState.writeUp.map((write, index) => (
+          <div key={index} className={styles.fieldContainer}>
+            <textarea
+              className={styles.descriptionTextArea}
+              value={write}
+              onChange={(e) => handleFieldChange("writeUp", index, e.target.value)}
+            />
+            <button className={styles.deleteButton} onClick={() => handleDeleteField("writeUp", index)}>Delete</button>
+          </div>
         ))}
-        <button onClick={() => handleAddField(setWriteUp)}>Add More Write Up</button>
+        <button className={styles.addButton} onClick={() => handleAddField("writeUp")}>Add More Write Up</button>
         <h1>Snippet Description</h1>
         <textarea
           className={styles.descriptionTextArea}
-          value={snippetDescription}
-          onChange={(e) => setSnippetDescription(e.target.value)}
+          value={snippetState.snippetDescription}
+          onChange={(e) => handleInputChange("snippetDescription", e.target.value)}
         />
         <h1>Snippet Source</h1>
         <textarea
           className={styles.descriptionTextArea}
-          value={snippetSource}
-          onChange={(e) => setSnippetSource(e.target.value)}
+          value={snippetState.snippetSource}
+          onChange={(e) => handleInputChange("snippetSource", e.target.value)}
         />
         <h1>Snippet Source Links</h1>
-        {snippetSourceLinks.map((link, index) => (
-          <textarea
-            key={index}
-            className={styles.descriptionTextArea}
-            value={link}
-            onChange={(e) => handleFieldChange(index, e.target.value, setSnippetSourceLinks)}
-          />
+        {snippetState.snippetSourceLinks.map((link, index) => (
+          <div key={index} className={styles.fieldContainer}>
+            <textarea
+              className={styles.descriptionTextArea}
+              value={link}
+              onChange={(e) => handleFieldChange("snippetSourceLinks", index, e.target.value)}
+            />
+            <button className={styles.deleteButton} onClick={() => handleDeleteField("snippetSourceLinks", index)}>Delete</button>
+          </div>
         ))}
-        <button onClick={() => handleAddField(setSnippetSourceLinks)}>Add More Links</button>
+        <button className={styles.addButton} onClick={() => handleAddField("snippetSourceLinks")}>Add More Links</button>
         <div className={styles.divLine}></div>
-        <button className={styles.button} onClick={handleAddSnippet}>Add</button>
+        <button className={styles.saveButton} onClick={handleAddSnippet}>Add</button>
+        <button className={styles.undoButton} onClick={handleUndo} disabled={history.length === 0}>Undo</button>
       </div>
     </div>
   );

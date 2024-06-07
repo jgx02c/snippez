@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import styles from './add-language.module.scss';
 import React, { useState, useEffect } from 'react';
-import Close from '@/styles/icons/X.svg'
+import Close from '@/styles/icons/X.svg';
 import Image from 'next/image';
+import { getAllLanguages } from '../../../classes/controller.js'; // Adjust the import path as necessary
 
 export interface AddLanguageProps {
   className?: string;
@@ -18,8 +19,7 @@ export const AddLanguage: React.FC<AddLanguageProps> = ({ className, onClose, on
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/languages');
-        const data = await response.json();
+        const data = await getAllLanguages();
         setLanguages(data);
       } catch (err) {
         setError('Failed to fetch languages');

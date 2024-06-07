@@ -118,7 +118,7 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
           ))}
           {isCreateSnippetClicked && (
             <div className={styles.modalOverlay}>
-              <CreateSnippet onClose={handleCloseCreateSnippet} />
+              <CreateSnippet onClose={handleCloseCreateSnippet} programmingLanguage={selectedLanguage} />
             </div>
           )}
         </>

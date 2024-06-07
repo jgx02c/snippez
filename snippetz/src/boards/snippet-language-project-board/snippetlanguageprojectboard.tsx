@@ -23,7 +23,7 @@ export const SnippetLanguageProjectBoard: React.FC< SnippetLanguageProjectBoardP
   useEffect(() => {
     const fetchSnippets = async () => {
       try {
-        const responseData: SnippetType[] = await controller.getSnippets(selectedLanguage);
+        const responseData: SnippetType[] = await controller.getProjectSnippets(selectedLanguage);
         setSnippets(responseData);
         console.log("response", responseData);
       } catch (error) {
