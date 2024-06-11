@@ -20,10 +20,9 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
   const [selectedSnippet, setSelectedSnippet] = useState<SnippetType | null>(null);
   const [isCreateSnippetClicked, setCreateSnippetClicked] = useState<boolean>(false);
 
-  useEffect(() => {
     const fetchSnippets = async () => {
       try {
-        const responseData: SnippetType[] = await controller.getSnippets(selectedLanguage);
+        const responseData: SnippetType[] = await controller.getSnippetsByLanguage(selectedLanguage);
         setSnippets(responseData);
         console.log("response", responseData);
       } catch (error) {
@@ -32,12 +31,19 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
       }
     };
 
+
+  useEffect(() => {
     fetchSnippets();
   }, []);
 
   const handleSnippetCardClick = (snippet: SnippetType) => {
     setSelectedSnippet(snippet);
   };
+
+  const handleRefreshBoard = () => {
+    fetchSnippets();
+  }
+
 
   const handleCreateSnippetClick = () => {
     setCreateSnippetClicked(true);
@@ -62,18 +68,19 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
     <div className={classNames(styles.root, className)}>
       {selectedSnippet ? (
         <SnippetBoard 
-        onClose={() => setSelectedSnippet(null)}
-        snippetID={selectedSnippet.snippetID} 
-        dateCreated={selectedSnippet.dateCreated} 
-        lastDateModified={selectedSnippet.lastDateModified} 
-        programmingLanguage={selectedSnippet.programmingLanguage} 
-        codeArray={selectedSnippet.codeArray} 
-        writeUp={selectedSnippet.writeUp} 
-        snippetDescription={selectedSnippet.snippetDescription} 
-        snippetSource={selectedSnippet.snippetSource} 
-        snippetSourceLinks={selectedSnippet.snippetSourceLinks} 
-        snippetName={selectedSnippet.snippetName}        
-        />
+        
+          onClose={() => setSelectedSnippet(null)}
+          dateCreated={selectedSnippet.dateCreated}
+          lastDateModified={selectedSnippet.lastDateModified}
+          programmingLanguage={selectedSnippet.programmingLanguage}
+          codeArray={selectedSnippet.codeArray}
+          writeUp={selectedSnippet.writeUp}
+          snippetDescription={selectedSnippet.snippetDescription}
+          snippetSource={selectedSnippet.snippetSource}
+          snippetSourceLinks={selectedSnippet.snippetSourceLinks}
+          snippetName={selectedSnippet.snippetName} 
+          refreshBoard={() =>  handleRefreshBoard()}      
+            />
       ) : (
         <>
             
@@ -100,7 +107,6 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
   
         <div className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
            <SnippetCard 
-           snippetID={snippet.snippetID} 
            dateCreated={snippet.dateCreated} 
            lastDateModified={snippet.lastDateModified} 
            programmingLanguage={snippet.programmingLanguage} 
@@ -118,7 +124,7 @@ export const SnippetsLanguagesBoard: React.FC< SnippetsSnippetBoardProps> = ({ c
           ))}
           {isCreateSnippetClicked && (
             <div className={styles.modalOverlay}>
-              <CreateSnippet onClose={handleCloseCreateSnippet} programmingLanguage={selectedLanguage} />
+              <CreateSnippet onClose={handleCloseCreateSnippet} programmingLanguage={selectedLanguage}  refreshBoard={() =>  handleRefreshBoard()}        />
             </div>
           )}
         </>

@@ -4,7 +4,6 @@ import React from 'react';
 
 export interface project {
     className?: string;
-    projectID: number;
     dateCreated: string;
     lastDateModified: string;
     projectName: string;
@@ -14,7 +13,7 @@ export interface project {
       }[]
 }
 
-export const ProjectCard = ({ className, projectName, projectID, dateCreated, lastDateModified, projectSnippets}: project) => {
+export const ProjectCard = ({ className, projectName, dateCreated, lastDateModified, projectSnippets}: project) => {
 
     return <div className={classNames(styles.root, className)}>
       <div className={styles.divMain}>

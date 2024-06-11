@@ -4,25 +4,35 @@
  */
 
 /**
- * This is an asynchronous GET request for all Snippets.
+ * This is an asynchronous GET request for a single Snippet by name.
+ *
+ * @param {string} snippetName - The name of the snippet to retrieve.
  */
-async function getAllSnippets() {
-  const response_getAllSnippets = await fetch(`http://localhost:4000/api/snippets`);
-  const snippets = await response_getAllSnippets.json();
-  console.log(snippets);
-  return snippets;
+async function getSnippet(snippetName) {
+  try {
+    const response = await fetch(`http://localhost:4000/api/snippets/${snippetName}`);
+    if (!response.ok) throw new Error('Snippet not found');
+    const snippet = await response.json();
+    console.log(snippet);
+    return snippet;
+  } catch (error) {
+    console.error('Error fetching snippet:', error);
+  }
 }
 
 /**
- * This is an asynchronous GET request for a single Snippet by ID.
- *
- * @param {number} id - The ID of the snippet to retrieve.
+ * This is an asynchronous GET request for all snippets.
  */
-async function getSnippet(id) {
-  const response_getSnippet = await fetch(`http://localhost:4000/api/snippets/${id}`);
-  const snippet = await response_getSnippet.json();
-  console.log(snippet);
-  return snippet;
+async function getRecentSnippets() {
+  try {
+    const response = await fetch(`http://localhost:4000/api/snippets/recent`);
+    if (!response.ok) throw new Error('Error fetching snippets');
+    const snippets = await response.json();
+    console.log(snippets);
+    return snippets;
+  } catch (error) {
+    console.error('Error fetching snippets:', error);
+  }
 }
 
 /**
@@ -30,34 +40,16 @@ async function getSnippet(id) {
  *
  * @param {string} language - The language to retrieve snippets for.
  */
-async function getSnippets(language) {
-  const response_getSnippets = await fetch(`http://localhost:4000/api/snippets/language/${language}`);
-  const snippets = await response_getSnippets.json();
-  console.log(snippets);
-  return snippets;
-}
-
-/**
- * This is an asynchronous GET request for recent Snippets.
- */
-async function getRecentSnippets() {
-  const response_getRecentSnippets = await fetch(`http://localhost:4000/api/recent-snippets`);
-  const snippets = await response_getRecentSnippets.json();
-  console.log(snippets);
-  return snippets;
-}
-
-/**
- * This is an asynchronous GET request for filtered Snippets.
- *
- * @param {string} filter - The attribute to filter by (e.g., 'programmingLanguage', 'snippetName').
- * @param {string} filterType - The value to filter by.
- */
-async function getFilteredSnippets(filter, filterType) {
-  const response_getFilteredSnippets = await fetch(`http://localhost:4000/api/snippets/filter/${filter}/${filterType}`);
-  const filteredSnippets = await response_getFilteredSnippets.json();
-  console.log(filteredSnippets);
-  return filteredSnippets;
+async function getSnippetsByLanguage(language) {
+  try {
+    const response = await fetch(`http://localhost:4000/api/snippets/language/${language}`);
+    if (!response.ok) throw new Error('Error fetching snippets by language');
+    const snippets = await response.json();
+    console.log(snippets);
+    return snippets;
+  } catch (error) {
+    console.error('Error fetching snippets by language:', error);
+  }
 }
 
 /**
@@ -66,66 +58,73 @@ async function getFilteredSnippets(filter, filterType) {
  * @param {Object} data - The data for the new snippet.
  */
 async function createSnippet(data) {
-  const response_createSnippet = await fetch(`http://localhost:4000/api/snippets/create`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-  const newSnippet = await response_createSnippet.json();
-  console.log(newSnippet);
-  return newSnippet;
+  try {
+    const response = await fetch('http://localhost:4000/api/snippets/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Error creating snippet');
+    const newSnippet = await response.json();
+    console.log(newSnippet);
+    return newSnippet;
+  } catch (error) {
+    console.error('Error creating snippet:', error);
+  }
 }
 
 /**
  * This is an asynchronous PUT request to update an existing Snippet.
  *
- * @param {string} programmingLanguage - The programming language of the snippet.
  * @param {string} snippetName - The name of the snippet to update.
  * @param {Object} data - The updated data for the snippet.
  */
-async function updateSnippet(programmingLanguage, snippetName, data) {
-  const response_updateSnippet = await fetch(`http://localhost:4000/api/snippets/${snippetName}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-  const updatedSnippet = await response_updateSnippet.json();
-  console.log(updatedSnippet);
-  return updatedSnippet;
+async function updateSnippet(snippetName, data) {
+  try {
+    const response = await fetch(`http://localhost:4000/api/snippets/${snippetName}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Error updating snippet');
+    const updatedSnippet = await response.json();
+    console.log(updatedSnippet);
+    return updatedSnippet;
+  } catch (error) {
+    console.error('Error updating snippet:', error);
+  }
 }
 
 /**
  * This is an asynchronous DELETE request to delete a Snippet.
  *
- * @param {number} snippetID - The ID of the snippet to delete.
- * @param {string} programmingLanguage - The programming language of the snippet.
+ * @param {string} snippetName - The name of the snippet to delete.
  */
-async function deleteSnippet(snippetID, programmingLanguage) {
-  const response = await fetch(`http://localhost:4000/api/snippets/${snippetID}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ programmingLanguage }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to delete snippet');
+async function deleteSnippet(snippetName) {
+  try {
+    const response = await fetch(`http://localhost:4000/api/snippets/${snippetName}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) throw new Error('Error deleting snippet');
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error('Error deleting snippet:', error);
   }
-
-  return response.json();
 }
 
 export {
-  getAllSnippets,
   getSnippet,
-  getSnippets,
   getRecentSnippets,
-  getFilteredSnippets,
+  getSnippetsByLanguage,
   createSnippet,
   updateSnippet,
   deleteSnippet,

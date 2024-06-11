@@ -7,7 +7,7 @@
  * This is an asynchronous GET request for all Projects.
  */
 async function getAllProjects() {
-  const response_getAllProjects = await fetch("http://localhost:4000/api/projects");
+  const response_getAllProjects = await fetch(`http://localhost:4000/api/projects`);
   const projects = await response_getAllProjects.json();
   console.log(projects);
   return projects;
@@ -24,20 +24,10 @@ async function getProject(projectName) {
 }
 
 /**
- * This is an asynchronous GET request for filtered Projects.
- */
-async function getFilteredProjects(filter, filterType) {
-  const response_getFilteredProjects = await fetch(`http://localhost:4000/api/projects/filter/${filter}/${filterType}`);
-  const filteredProjects = await response_getFilteredProjects.json();
-  console.log(filteredProjects);
-  return filteredProjects;
-}
-
-/**
  * This is an asynchronous POST request to create a new Project.
  */
 async function createProject(data) {
-  const response_createProject = await fetch(`http://localhost:4000/api/projects/create`, {
+  const response_createProject = await fetch(`http://localhost:4000/api/projects/create/${data}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -52,8 +42,8 @@ async function createProject(data) {
 /**
  * This is an asynchronous POST request to add a language to a Project.
  */
-async function addLanguage(projectId, data) {
-  const response_addLanguage = await fetch(`http://localhost:4000/api/projects/${projectId}/add-language`, {
+async function addLanguage(projectName, data) {
+  const response_addLanguage = await fetch(`http://localhost:4000/api/projects/languages/${projectName}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -66,6 +56,23 @@ async function addLanguage(projectId, data) {
 }
 
 /**
+ * This is an asynchronous POST request to add a snippet to a Project.
+ */
+async function addSnippet(projectName, data) {
+  const response_addSnippet = await fetch(`http://localhost:4000/api/projects/snippets/${projectName}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const updatedProject = await response_addSnippet.json();
+  console.log(updatedProject);
+  return updatedProject;
+}
+
+
+/**
  * This is an asynchronous GET request for all snippets in a Project.
  */
 async function getProjectSnippets(projectName) {
@@ -75,11 +82,22 @@ async function getProjectSnippets(projectName) {
   return projectSnippets;
 }
 
+/**
+ * This is an asynchronous GET request for all snippets in a Project.
+ */
+async function getProjectLanguages(projectName) {
+  const response_getProjectSnippets = await fetch(`http://localhost:4000/api/projects/${projectName}/languages`);
+  const projectSnippets = await response_getProjectSnippets.json();
+  console.log(projectSnippets);
+  return projectSnippets;
+}
+
 export {
   getAllProjects,
   getProject,
-  getFilteredProjects,
   createProject,
   addLanguage,
+  addSnippet,
   getProjectSnippets,
+  getProjectLanguages,
 };

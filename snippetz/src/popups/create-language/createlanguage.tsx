@@ -9,9 +9,10 @@ import { createLanguage } from '../../../classes/controller.js'; // Adjust the i
 export interface InsightExpandedProps {
     className?: string;
     onClose: () => void;
+    refreshBoard: () => void;
 }
 
-export const CreateLanguage: React.FC<InsightExpandedProps> = ({ className, onClose }) => {
+export const CreateLanguage: React.FC<InsightExpandedProps> = ({ className, refreshBoard, onClose }) => {
     const [open, setOpen] = useState(false);
     const [languageName, setLanguageName] = useState("");
     const [languageIcon, setLanguageIcon] = useState("");
@@ -32,12 +33,13 @@ export const CreateLanguage: React.FC<InsightExpandedProps> = ({ className, onCl
         const newLanguage = {
             languageID,
             languageName,
-            languageIcon, // Use the selected icon
+            languageIcon: languageName,// Use the selected icon
             languageSnippetCount
         };
 
         try {
             await createLanguage(newLanguage);
+            refreshBoard();
             onClose(); // Close the modal after successful creation
         } catch (error) {
             console.error('Error creating language:', error);

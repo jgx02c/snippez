@@ -4,7 +4,6 @@ import Image from 'next/image'
 
 export interface SnippetCardProps {
     className?: string;
-    snippetID: number;
     dateCreated: string;
     lastDateModified: string;
     programmingLanguage: string;
@@ -16,7 +15,7 @@ export interface SnippetCardProps {
     snippetName: string;
 }
 
-export const SnippetCard = ({ className, snippetID, snippetName, snippetDescription, lastDateModified }: SnippetCardProps) => {
+export const SnippetCard = ({ className, snippetName, snippetDescription, lastDateModified }: SnippetCardProps) => {
     return <div className={classNames(styles.root, className)}>
         <div className={styles.divMain}>   
             <div>

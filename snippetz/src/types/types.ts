@@ -1,5 +1,4 @@
 export interface ProjectType {
-  projectID: number;
   dateCreated: string;
   lastDateModified: string;
   projectName: string;
@@ -10,14 +9,12 @@ export interface ProjectType {
 }
 
 export interface LanguageType {
-    languageID: number;
     languageName: string;
     languageIcon: string;
     languageSnippetCount: number;
   }
 
 export interface SnippetType {
-    snippetID: number;
     dateCreated: string;
     lastDateModified: string;
     programmingLanguage: string;

@@ -4,15 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Close from '@/styles/icons/X.svg';
 import Image from 'next/image';
 import { getAllLanguages } from '../../../classes/controller.js'; // Adjust the import path as necessary
+import { LanguageType } from '@/types/types';
 
 export interface AddLanguageProps {
   className?: string;
   onClose: () => void;
   onSelectLanguage: (language: any) => void;
+  refreshBoard: () => void;
 }
 
 export const AddLanguage: React.FC<AddLanguageProps> = ({ className, onClose, onSelectLanguage }) => {
-  const [languages, setLanguages] = useState<any[]>([]);
+  const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +54,7 @@ export const AddLanguage: React.FC<AddLanguageProps> = ({ className, onClose, on
             <div
               key={index}
               className={styles.languageItem}
-              onClick={() => onSelectLanguage(language)}
+              onClick={() => onSelectLanguage(language.languageName)}
             >
               <img src={language.languageIcon} alt={language.languageName} />
               <p>{language.languageName}</p>

@@ -9,7 +9,6 @@ import * as controller from '../../../classes/controller.js';
 export interface SnippetBoardProps {
     className?: string;
     onClose: () => void;
-    snippetID: number;
     dateCreated: string;
     lastDateModified: string;
     programmingLanguage: string;
@@ -19,19 +18,20 @@ export interface SnippetBoardProps {
     snippetSource: string;
     snippetSourceLinks: string[];
     snippetName: string;
+    refreshBoard: () => void;  // Add this prop to refresh the board
 }
 
 export const SnippetBoard = ({
     className,
     onClose,
-    snippetID,
     dateCreated,
     lastDateModified,
     programmingLanguage,
     codeArray,
     writeUp,
     snippetName,
-    snippetDescription
+    snippetDescription,
+    refreshBoard  // Destructure the new prop
 }: SnippetBoardProps) => {
     const [codeArrayState, setCodeArrayState] = useState<string[]>(codeArray);
     const [writeUpState, setWriteUpState] = useState<string[]>(writeUp);
@@ -86,7 +86,6 @@ export const SnippetBoard = ({
 
     const handleSaveChanges = async () => {
         const updatedSnippet = {
-            snippetID,
             dateCreated,
             lastDateModified: new Date().toISOString(),
             programmingLanguage,
@@ -115,12 +114,14 @@ export const SnippetBoard = ({
         }
 
         try {
-            await controller.deleteSnippet(snippetID, programmingLanguage);
-            alert('Snippet deleted successfully!');
-            onClose(); // Close the modal after deletion
+            const result = await controller.deleteSnippet(programmingLanguage, snippetName);
+            alert(result);
         } catch (error) {
             console.error('Error deleting snippet:', error);
             alert('Error deleting snippet.');
+        } finally {
+            onClose(); // Close the modal after attempting to delete
+            refreshBoard(); // Refresh the parent component
         }
     };
 
@@ -184,28 +185,24 @@ export const SnippetBoard = ({
                                     style={{ 
                                         margin: '2vh',
                                         border: '2px solid #d9d9d9',
-                                        
-                                       
-                                     }}
+                                    }}
                                     className={styles.divCode}
                                 />
                                 <span className={styles.spanButtons}>
-                                <button className={styles.button} onClick={() => handleCopyToClipboard(snippetCode)}>Copy</button>
-                                <button className={styles.button} onClick={() => handleDeleteCode(index)}>Delete</button>
+                                    <button className={styles.button} onClick={() => handleCopyToClipboard(snippetCode)}>Copy</button>
+                                    <button className={styles.button} onClick={() => handleDeleteCode(index)}>Delete</button>
                                 </span>
                                 <textarea
                                     value={writeUpState[index]}
                                     onChange={(e) => handleWriteUpChange(index, e.target.value)}
                                     className={styles.writeUpInput}
                                 />
-                               
                             </div>
                         </React.Fragment>
                     ))}
-                   
                 </div>
                 <div className={styles.divExtra}>
-                    <button  className={styles.button} onClick={handleAddCode}>Add Code/Write-Up</button>
+                    <button className={styles.button} onClick={handleAddCode}>Add Code/Write-Up</button>
                     <button className={styles.button} onClick={handleUndo} disabled={history.length === 0}>Undo</button>
                     <button className={styles.button} onClick={handleSaveChanges}>Save Changes</button>
                 </div>

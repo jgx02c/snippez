@@ -33,33 +33,38 @@ export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, s
   const renderComponent = () => {
     switch (currentComponent) {
       case 1:
-        return <AddLanguage onClose={handleClosePopup} onSelectLanguage={handleLanguageCardClick} />;
+        return <AddLanguage onClose={handleClosePopup} onSelectLanguage={handleLanguageCardClick} refreshBoard={handleRefreshBoard} />;
       case 2:
         return <AddSnippet onClose={handleClosePopup} onAddSnippets={(snippets) => {
           // handle added snippets
           handleClosePopup();
         }} />;
       case 3:
-        return <CreateSnippet onClose={handleClosePopup} programmingLanguage='' />;
+        return <CreateSnippet onClose={handleClosePopup} programmingLanguage={selectedLanguage || ""} refreshBoard={handleRefreshBoard} />;
       default:
         return null;
     }
   };
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const responseData: ProjectType = await controller.getProject(selectedProjectName);
-        setProject(responseData);
-        console.log("response", responseData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-      }
-    };
+  const fetchProject = async () => {
+    try {
+      const responseData: ProjectType = await controller.getProject(selectedProjectName);
+      setProject(responseData);
+      console.log("response", responseData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+    }
+  };
 
+  useEffect(() => {
+    
     fetchProject();
   }, [selectedProjectName]);
+
+  const handleRefreshBoard = () => {
+    fetchProject();
+  }
 
   const handleSnippetCardClick = (snippet: SnippetType) => {
     setSelectedSnippet(snippet);
@@ -89,8 +94,8 @@ export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, s
     <div className={classNames(styles.root, className)}>
       {selectedSnippet ? (
         <SnippetBoard
+          refreshBoard={handleRefreshBoard}
           onClose={handleCloseSnippetBoard}
-          snippetID={selectedSnippet.snippetID}
           dateCreated={selectedSnippet.dateCreated}
           lastDateModified={selectedSnippet.lastDateModified}
           programmingLanguage={selectedSnippet.programmingLanguage}
@@ -132,7 +137,6 @@ export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, s
                     >
                       <LanguageCard
                         key={index}
-                        languageID={language.languageID}
                         languageName={language.languageName}
                         languageIcon={language.languageIcon}
                         languageSnippetCount={language.languageSnippetCount}
@@ -149,7 +153,6 @@ export const SnippetProjectBoard: React.FC<ProjectsBoardProps> = ({ className, s
                 projectSnippet.snippets.map((snippet, index) => (
                   <div key={index} className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
                     <SnippetCard
-                      snippetID={snippet.snippetID}
                       dateCreated={snippet.dateCreated}
                       lastDateModified={snippet.lastDateModified}
                       programmingLanguage={snippet.programmingLanguage}

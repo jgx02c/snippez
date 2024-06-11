@@ -1,122 +1,82 @@
-/**
- * @file This contains controlling methods.
- * @author Joshua Goodman
- */
+// controller.ts
 
 import * as projectHandler from "./handlers/projectHandler";
 import * as snippetHandler from "./handlers/snippetHandler";
 import * as languageHandler from "./handlers/languageHandler";
 
-/*
- * This is an asynchronous request that produces the list of results
- */
 async function getAllProjects() {
-    const arrayOfProjects = await projectHandler.getAllProjects();
-    console.log(arrayOfProjects + "controller");
-    return arrayOfProjects;
+    return await projectHandler.getAllProjects();
 }
 
 async function getAllLanguages() {
-    const arrayOfLanguages = await languageHandler.getAllLanguages();
-    console.log(arrayOfLanguages + "controller");
-    return arrayOfLanguages;
+    return await languageHandler.getAllLanguages();
 }
 
 async function getAllSnippets() {
-    const arrayOfSnippets = await snippetHandler.getAllSnippets();
-    console.log(arrayOfSnippets + "controller");
-    return arrayOfSnippets;
+    return await snippetHandler.getAllSnippets();
 }
 
 async function createProject(data) {
-    const newProject = await projectHandler.createProject(data);
-    console.log(newProject + "controller");
-    return newProject;
+    return await projectHandler.createProject(data);
 }
 
 async function createSnippet(data) {
-    const newSnippet = await snippetHandler.createSnippet(data);
-    console.log(newSnippet + "controller");
-    return newSnippet;
+    return await snippetHandler.createSnippet(data);
 }
 
 async function createLanguage(data) {
-    const newLanguage = await languageHandler.createLanguage(data);
-    console.log(newLanguage + "controller");
-    return newLanguage;
+    return await languageHandler.createLanguage(data);
 }
 
-async function addLanguage(projectId, data) {
-    const updatedProject = await projectHandler.addLanguage(projectId, data);
-    console.log(updatedProject + "controller");
-    return updatedProject;
+async function addLanguage(projectName, data) {
+    return await projectHandler.addLanguage(projectName, data);
 }
 
-/*
- * This is an asynchronous request that produces the list result
- */
 async function getProject(projectName) {
-    const project = await projectHandler.getProject(projectName);
-    console.log(project + "controller");
-    return project;
+    return await projectHandler.getProject(projectName);
 }
 
-async function getLanguage(languageId) {
-    const language = await languageHandler.getLanguage(languageId);
-    console.log(language + "controller");
-    return language;
+async function getLanguage(languageName) {
+    return await languageHandler.getLanguage(languageName);
 }
 
-async function getSnippet(snippetId) {
-    const snippet = await snippetHandler.getSnippet(snippetId);
-    console.log(snippet + "controller");
-    return snippet;
+async function getSnippet(snippetName) {
+    return await snippetHandler.getSnippet(snippetName);
 }
 
-async function deleteSnippet(snippetId, programmingLanguage) {
-    const snippet = await snippetHandler.deleteSnippet(snippetId, programmingLanguage);
-    console.log(snippet + "controller");
-    return snippet;
+async function deleteSnippet(programmingLanguage, snippetName) {
+    return await snippetHandler.deleteSnippet(programmingLanguage, snippetName);
 }
 
 async function updateSnippet(programmingLanguage, snippetName, data) {
-    const updatedSnippet = await snippetHandler.updateSnippet(programmingLanguage, snippetName, data);
-    console.log(updatedSnippet + "controller");
-    return updatedSnippet;
+    return await snippetHandler.updateSnippet(programmingLanguage, snippetName, data);
 }
 
-async function getSnippets(language) {
-    const arrayOfSnippets = await snippetHandler.getSnippets(language);
-    console.log(arrayOfSnippets + "controller");
-    return arrayOfSnippets;
+async function getSnippetsByLanguage(languageName) {
+    return await snippetHandler.getSnippetsByLanguage(languageName);
 }
 
 async function getRecentSnippets() {
-    const arrayOfSnippets = await snippetHandler.getRecentSnippets();
-    console.log(arrayOfSnippets + "controller");
-    return arrayOfSnippets;
+    return await snippetHandler.getRecentSnippets();
 }
 
 async function getProjectSnippets(projectName) {
-    const projectSnippets = await projectHandler.getProjectSnippets(projectName);
-    console.log(projectSnippets + "controller");
-    return projectSnippets;
+    return await projectHandler.getProjectSnippets(projectName);
 }
 
 export {
-    getAllSnippets, 
-    getAllProjects, 
-    getAllLanguages, 
-    getProject, 
-    getSnippet, 
-    getLanguage, 
-    getSnippets, 
-    getRecentSnippets, 
-    getProjectSnippets,
-    createSnippet, 
-    createProject, 
-    createLanguage,
+    getAllProjects,
+    getProject,
+    createProject,
     addLanguage,
+    createSnippet,
+    getProjectSnippets,
+    getAllLanguages,
+    getLanguage,
+    createLanguage,
+    getSnippet,
+    getRecentSnippets,
+    getSnippetsByLanguage,
     deleteSnippet,
-    updateSnippet, 
+    updateSnippet,
 };

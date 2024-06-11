@@ -17,24 +17,29 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
   const [selectedSnippet, setSelectedSnippet] = useState<SnippetType | null>(null);
   const [isCreateSnippetClicked, setCreateSnippetClicked] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchSnippets = async () => {
-      try {
-        const responseData: SnippetType[] = await controller.getRecentSnippets();
-        if (Array.isArray(responseData)) {
-          setSnippets(responseData);
-        } else {
-          console.error('Response is not an array:', responseData);
-          setError('Error fetching data. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  const fetchSnippets = async () => {
+    try {
+      const responseData: SnippetType[] = await controller.getRecentSnippets();
+      if (Array.isArray(responseData)) {
+        setSnippets(responseData);
+      } else {
+        console.error('Response is not an array:', responseData);
         setError('Error fetching data. Please try again.');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Error fetching data. Please try again.');
+    }
+  };
 
+  useEffect(() => {
     fetchSnippets();
   }, []);
+
+
+  const handleRefreshBoard = () => {
+    fetchSnippets();
+  }
 
   const handleSnippetCardClick = (snippet: SnippetType) => {
     setSelectedSnippet(snippet);
@@ -49,7 +54,6 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
       {selectedSnippet ? (
         <SnippetBoard
           onClose={() => setSelectedSnippet(null)}
-          snippetID={selectedSnippet.snippetID} 
           dateCreated={selectedSnippet.dateCreated} 
           lastDateModified={selectedSnippet.lastDateModified} 
           programmingLanguage={selectedSnippet.programmingLanguage} 
@@ -59,6 +63,7 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
           snippetSource={selectedSnippet.snippetSource} 
           snippetSourceLinks={selectedSnippet.snippetSourceLinks} 
           snippetName={selectedSnippet.snippetName}   
+          refreshBoard={() =>  handleRefreshBoard()}      
         />
          
       ) : (
@@ -75,7 +80,6 @@ export const RecentBoard: React.FC<SnippetsBoardProps> = ({ className }: Snippet
           {snippets.map((snippet, index) => (
             <div key={index} className={styles.parentItem} onClick={() => handleSnippetCardClick(snippet)}>
               <SnippetCard
-                snippetID={snippet.snippetID}
                 dateCreated={snippet.dateCreated}
                 lastDateModified={snippet.lastDateModified}
                 programmingLanguage={snippet.programmingLanguage}

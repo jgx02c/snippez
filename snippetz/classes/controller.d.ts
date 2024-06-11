@@ -1,47 +1,98 @@
-// controller.d.ts
+// controller.ts
 
-import { ProjectType, LanguageType, SnippetType } from '@/types/types';
+import * as projectHandler from "./handlers/projectHandler";
+import * as snippetHandler from "./handlers/snippetHandler";
+import * as languageHandler from "./handlers/languageHandler";
 
-declare function getAllProjects(): Promise<ProjectType[]>;
-declare function getAllLanguages(): Promise<LanguageType[]>;
-declare function getAllSnippets(): Promise<SnippetType[]>;
+async function getAllProjects(): Promise<ProjectType[]> {
+    return projectHandler.getAllProjects();
+}
 
-declare function getRecentSnippets(): Promise<SnippetType[]>;
+async function getAllLanguages(): Promise<LanguageType[]> {
+    return languageHandler.getAllLanguages();
+}
 
-declare function getSnippets(language: string): Promise<SnippetType[]>;
-declare function getProjects(): Promise<ProjectType[]>;
-declare function getLanguages(project: string): Promise<LanguageType[]>;
+async function getAllSnippets(): Promise<SnippetType[]> {
+    return snippetHandler.getAllSnippets();
+}
 
-declare function getSnippet(snippetId: number): Promise<SnippetType>;
-declare function getProject(projectName: string): Promise<ProjectType>;
-declare function getLanguage(languageId: number): Promise<LanguageType>;
+async function getRecentSnippets(): Promise<SnippetType[]> {
+    return snippetHandler.getRecentSnippets();
+}
 
-declare function getProjectSnippets(projectName: string): Promise<SnippetType[]>;
+async function getSnippetsByLanguage(language: string): Promise<SnippetType[]> {
+    return snippetHandler.getSnippetsByLanguage(language);
+}
 
-declare function createSnippet(data: SnippetType): Promise<SnippetType>;
-declare function createProject(data: ProjectType): Promise<ProjectType>;
-declare function createLanguage(data: LanguageType): Promise<LanguageType>;
+async function getProjects(): Promise<ProjectType[]> {
+    // Implement this if needed
+    return [];
+}
 
-declare function addLanguage(projectId: number, data: LanguageType): Promise<ProjectType>;
+async function getLanguages(project: string): Promise<LanguageType[]> {
+    // Implement this if needed
+    return [];
+}
 
-declare function deleteSnippet(snippetId: number, programmingLanguage: string): Promise<void>;
-declare function updateSnippet(programmingLanguage: string, snippetName: string, data: SnippetType): Promise<SnippetType>;
+async function getSnippet(snippetId: number): Promise<SnippetType> {
+    // Implement this if needed
+    return {} as SnippetType;
+}
 
+async function getProject(projectName: string): Promise<ProjectType> {
+    return projectHandler.getProject(projectName);
+}
 
-export { 
-    getAllSnippets, 
-    getAllProjects, 
-    getAllLanguages, 
-    getProject, 
-    getSnippet, 
-    getLanguage, 
-    getSnippets, 
-    getRecentSnippets, 
+async function getLanguage(languageId: number): Promise<LanguageType> {
+    // Implement this if needed
+    return {} as LanguageType;
+}
+
+async function getProjectSnippets(projectName: string): Promise<SnippetType[]> {
+    return projectHandler.getProjectSnippets(projectName);
+}
+
+async function createSnippet(data: SnippetType): Promise<SnippetType> {
+    return snippetHandler.createSnippet(data);
+}
+
+async function createProject(data: ProjectType): Promise<ProjectType> {
+    return projectHandler.createProject(data);
+}
+
+async function createLanguage(data: LanguageType): Promise<LanguageType> {
+    return languageHandler.createLanguage(data);
+}
+
+async function addLanguage(projectId: number, data: LanguageType): Promise<ProjectType> {
+    // Implement this if needed
+    return {} as ProjectType;
+}
+
+async function deleteSnippet(programmingLanguage: string, snippetName: string): Promise<void> {
+    return snippetHandler.deleteSnippet(programmingLanguage, snippetName);
+}
+
+async function updateSnippet(programmingLanguage: string, snippetName: string, data: SnippetType): Promise<SnippetType> {
+    return snippetHandler.updateSnippet(programmingLanguage, snippetName, data);
+}
+
+export {
+    getAllProjects,
+    getAllLanguages,
+    getAllSnippets,
+    getRecentSnippets,
+    getSnippetsByLanguage,
+    getProjects,
+    getLanguages,
+    getSnippet,
+    getProject,
+    getLanguage,
     getProjectSnippets,
-    createSnippet, 
-    createProject, 
+    createSnippet,
+    createProject,
     createLanguage,
     addLanguage,
     deleteSnippet,
-    updateSnippet, 
+    updateSnippet,
 };

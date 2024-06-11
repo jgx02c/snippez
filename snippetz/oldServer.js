@@ -3,6 +3,12 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 
+// Load models
+require('./backend/models/Project');
+require('./backend/models/Language');
+require('./backend/models/Recent');
+require('./backend/models/Snippet');
+
 const app = express();
 const port = 4000;
 
@@ -23,50 +29,6 @@ mongoose.connect(uri, {
   console.error('Error connecting to MongoDB', err);
 });
 
-// Define Mongoose schemas and models
-const languageSchema = new mongoose.Schema({
-  languageID: Number,
-  languageName: String,
-  languageIcon: String,
-  languageSnippetCount: Number
-});
-
-const Language = mongoose.model('Language', languageSchema, 'LanguagesData');
-
-const projectSchema = new mongoose.Schema({
-  projectID: Number,
-  dateCreated: String,
-  lastDateModified: String,
-  projectName: String,
-  projectSnippets: [{
-    language: String,
-    snippets: [String]
-  }]
-});
-
-const Project = mongoose.model('Project', projectSchema, 'Projects');
-
-const recentSchema = new mongoose.Schema({
-  recentSnippets: [{
-    snippetName: String,
-    language: String
-  }]
-});
-
-const Recent = mongoose.model('Recent', recentSchema, 'Recent');
-
-const snippetSchema = new mongoose.Schema({
-  snippetID: Number,
-  dateCreated: String,
-  lastDateModified: String,
-  programmingLanguage: String,
-  codeArray: [String],
-  writeUp: [String],
-  snippetDescription: String,
-  snippetSource: String,
-  snippetSourceLinks: [String],
-  snippetName: String
-});
 
 // Define MongoClient
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -89,7 +51,7 @@ app.get('/api/languages', async (req, res) => {
 app.get('/api/languages/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const language = await Language.findOne({ languageID: id });
+    const language = await Language.findOne({ _id: id });
     if (!language) {
       return res.status(404).send('Language not found');
     }
@@ -101,9 +63,9 @@ app.get('/api/languages/:id', async (req, res) => {
 
 // Endpoint to create a new language
 app.post('/api/languages/create', async (req, res) => {
-  const { languageID, languageName, languageIcon, languageSnippetCount } = req.body;
+  const { languageName, languageIcon, languageSnippetCount } = req.body;
 
-  if (!languageID || !languageName || !languageIcon || languageSnippetCount === undefined) {
+  if (!languageName || !languageIcon || languageSnippetCount === undefined) {
     return res.status(400).send('Missing required fields');
   }
 
@@ -122,7 +84,6 @@ app.post('/api/languages/create', async (req, res) => {
 
     // Add the language metadata to the LanguagesData collection
     const newLanguage = new Language({
-      languageID,
       languageName,
       languageIcon,
       languageSnippetCount
@@ -156,7 +117,7 @@ app.get('/api/projects', async (req, res) => {
 app.get('/api/projects/:projectName', async (req, res) => {
   const { projectName } = req.params;
   try {
-    const project = await Project.findOne({ projectName: projectName });
+    const project = await Project.findOne({ projectName });
     if (!project) {
       return res.status(404).send('Project not found');
     }
@@ -167,10 +128,10 @@ app.get('/api/projects/:projectName', async (req, res) => {
     // Fetch snippets and language details for each language in the project
     const projectSnippets = await Promise.all(
       project.projectSnippets.map(async ({ language, snippets }) => {
-        const languageDetails = await Language.findOne({ languageName: language });
+        const languageDetails = await Language.findOne({ languageName: language.languageName });
         const snippetsDetails = await Promise.all(
           snippets.map(async snippetName => {
-            const snippet = await database.collection(language).findOne({ snippetName });
+            const snippet = await database.collection(language.languageName).findOne({ snippetName });
             return snippet;
           })
         );
@@ -198,15 +159,14 @@ app.get('/api/projects/:projectName', async (req, res) => {
 
 // Endpoint to create a new project
 app.post('/api/projects/create', async (req, res) => {
-  const { projectID, dateCreated, lastDateModified, projectName, projectSnippets } = req.body;
+  const { dateCreated, lastDateModified, projectName, projectSnippets } = req.body;
 
-  if (!projectID || !dateCreated || !lastDateModified || !projectName || !projectSnippets) {
+  if (!dateCreated || !lastDateModified || !projectName || !projectSnippets) {
     return res.status(400).send('Missing required fields');
   }
 
   try {
     const newProject = new Project({
-      projectID,
       dateCreated,
       lastDateModified,
       projectName,
@@ -223,18 +183,22 @@ app.post('/api/projects/create', async (req, res) => {
 });
 
 // Endpoint to add a language to a project
-app.post('/api/projects/:projectId/add-language', async (req, res) => {
-  const { projectId } = req.params;
+app.post('/api/projects/:projectName/add-language', async (req, res) => {
+  const { projectName } = req.params;
   const { language } = req.body;
 
   try {
-    const project = await Project.findOne({ projectID: projectId });
+    const project = await Project.findOne({ projectName });
     if (!project) {
       return res.status(404).send('Project not found');
     }
 
     project.projectSnippets.push({
-      language: language.languageName,
+      language: {
+        languageName: language.languageName,
+        languageIcon: language.languageIcon,
+        languageSnippetCount: language.languageSnippetCount
+      },
       snippets: []
     });
 
@@ -261,7 +225,7 @@ app.get('/api/projects/:projectName/snippets', async (req, res) => {
     const database = client.db('Snippets');
 
     for (const { language, snippets: snippetNames } of project.projectSnippets) {
-      const snippetCollection = await database.collection(language).find().toArray();
+      const snippetCollection = await database.collection(language.languageName).find().toArray();
       snippets.push(...snippetCollection.filter(snippet => snippetNames.includes(snippet.snippetName)));
     }
 
@@ -275,12 +239,12 @@ app.get('/api/projects/:projectName/snippets', async (req, res) => {
 });
 
 // Endpoint to update a project with a new language
-app.put('/api/projects/update/:projectID', async (req, res) => {
-  const { projectID } = req.params;
+app.put('/api/projects/update/:projectName', async (req, res) => {
+  const { projectName } = req.params;
   const updatedProject = req.body;
 
   try {
-    const project = await Project.findOneAndUpdate({ projectID: parseInt(projectID) }, updatedProject, { new: true });
+    const project = await Project.findOneAndUpdate({ projectName }, updatedProject, { new: true });
 
     if (!project) {
       return res.status(404).send('Project not found');
@@ -337,7 +301,7 @@ app.get('/api/snippet/:snippetName', async (req, res) => {
     let snippet = null;
 
     for (const collection of collections) {
-      snippet = await database.collection(collection.name).findOne({ snippetName: snippetName });
+      snippet = await database.collection(collection.name).findOne({ snippetName });
       if (snippet) {
         break;
       }
@@ -385,7 +349,6 @@ app.get('/api/recent-snippets', async (req, res) => {
 // Endpoint to create a new snippet
 app.post('/api/snippets/create', async (req, res) => {
   const {
-    snippetID,
     dateCreated,
     lastDateModified,
     programmingLanguage,
@@ -397,7 +360,7 @@ app.post('/api/snippets/create', async (req, res) => {
     snippetName
   } = req.body;
 
-  if (!snippetID || !dateCreated || !lastDateModified || !programmingLanguage || !codeArray || !writeUp || !snippetDescription || !snippetSource || !snippetSourceLinks || !snippetName) {
+  if (!dateCreated || !lastDateModified || !programmingLanguage || !codeArray || !writeUp || !snippetDescription || !snippetSource || !snippetSourceLinks || !snippetName) {
     return res.status(400).send('Missing required fields');
   }
 
@@ -414,7 +377,6 @@ app.post('/api/snippets/create', async (req, res) => {
 
     // Insert the snippet into the appropriate collection
     const snippet = {
-      snippetID,
       dateCreated,
       lastDateModified,
       programmingLanguage,
@@ -438,8 +400,8 @@ app.post('/api/snippets/create', async (req, res) => {
 });
 
 // Endpoint to update a snippet
-app.put('/api/snippets/update/:snippetID', async (req, res) => {
-  const { snippetID } = req.params;
+app.put('/api/snippets/update/:snippetName', async (req, res) => {
+  const { snippetName } = req.params;
   const updatedSnippet = req.body;
 
   try {
@@ -447,7 +409,7 @@ app.put('/api/snippets/update/:snippetID', async (req, res) => {
       const database = client.db('Snippets');
       const collectionName = updatedSnippet.programmingLanguage;
       const result = await database.collection(collectionName).updateOne(
-          { snippetID: parseInt(snippetID) },
+          { snippetName },
           { $set: updatedSnippet }
       );
 
@@ -465,23 +427,23 @@ app.put('/api/snippets/update/:snippetID', async (req, res) => {
 });
 
 // Endpoint to delete a snippet
-app.delete('/api/snippets/:snippetID', async (req, res) => {
-  const { snippetID } = req.params;
+app.delete('/api/snippets/:snippetName', async (req, res) => {
+  const { snippetName } = req.params;
   const { programmingLanguage } = req.body;
 
   try {
     await client.connect();
     const database = client.db('Snippets');
-    const result = await database.collection(programmingLanguage).deleteOne({ snippetID: parseInt(snippetID) });
+    const result = await database.collection(programmingLanguage).deleteOne({ snippetName });
 
     if (result.deletedCount === 0) {
-      return res.status(404).send('Snippet not found');
+      return res.status(404).json({ error: 'Snippet not found' });
     }
 
-    res.status(200).send('Snippet deleted successfully');
+    res.status(200).json({ message: 'Snippet deleted successfully' });
   } catch (err) {
     console.error('Error deleting snippet:', err);
-    res.status(500).send('Error deleting snippet');
+    res.status(500).json({ error: 'Error deleting snippet' });
   } finally {
     await client.close();
   }

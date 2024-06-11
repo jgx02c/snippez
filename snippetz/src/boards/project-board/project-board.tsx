@@ -74,7 +74,6 @@ export const ProjectBoard: React.FC<projectsBoardProps> = ({ className }: projec
               onClick={() => handleProjectCardClick(project)}
             >
            <ProjectCard
-                projectID={project.projectID}
                 dateCreated={project.dateCreated}
                 lastDateModified={project.lastDateModified}
                 projectName={project.projectName}

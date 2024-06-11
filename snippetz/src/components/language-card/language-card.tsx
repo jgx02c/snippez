@@ -4,7 +4,6 @@ import Image from 'next/image';
 
 export interface LanguageCardProps {
     className?: string;
-    languageID: number;
     languageName: string;
     languageIcon: string;
     languageSnippetCount: number;
@@ -13,7 +12,7 @@ export interface LanguageCardProps {
 // Create a context to dynamically import all icons
 const iconsContext = require.context('@/icons', false, /\.(png|jpe?g|svg)$/);
 
-export const LanguageCard = ({ className, languageID, languageSnippetCount, languageIcon, languageName }: LanguageCardProps) => {
+export const LanguageCard = ({ className, languageSnippetCount, languageIcon, languageName }: LanguageCardProps) => {
     let iconSrc: string;
     try {
         // Try to get the specified icon

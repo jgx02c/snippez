@@ -9,6 +9,7 @@ export interface CreateSnippetProps {
   className?: string;
   onClose: () => void;
   programmingLanguage?: string; // Optional prop to autofill the programming language
+  refreshBoard: () => void;  // Add this prop to refresh the board
 }
 
 interface SnippetState {
@@ -21,7 +22,7 @@ interface SnippetState {
   snippetSourceLinks: string[];
 }
 
-export const CreateSnippet = ({ className, onClose, programmingLanguage = '' }: CreateSnippetProps) => {
+export const CreateSnippet = ({ className, onClose, refreshBoard, programmingLanguage = '' }: CreateSnippetProps) => {
   const [snippetState, setSnippetState] = useState<SnippetState>({
     snippetName: "",
     programmingLanguage: programmingLanguage,
@@ -48,6 +49,7 @@ export const CreateSnippet = ({ className, onClose, programmingLanguage = '' }: 
 
     try {
       await createSnippet(newSnippet);
+      refreshBoard();
       onClose(); // Close the modal after successful creation
     } catch (error) {
       console.error('Error creating snippet:', error);

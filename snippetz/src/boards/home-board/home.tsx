@@ -19,7 +19,7 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [isCreateLanguageClicked, setCreateLanguageClicked] = useState<boolean>(false);
 
-  useEffect(() => {
+
     const fetchLanguages = async () => {
       try {
         const responseData: LanguageType[] = await controller.getAllLanguages();
@@ -31,6 +31,8 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
       }
     };
 
+
+  useEffect(() => {
     fetchLanguages();
   }, []);
 
@@ -49,6 +51,11 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
   if (languages === undefined) {
     return <div>Loading...</div>;
   }
+
+  const handleRefreshBoard = () => {
+    fetchLanguages();
+  }
+
 
   return (
     <div className={classNames(styles.root, className)}>
@@ -78,7 +85,6 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
               onClick={() => handleLanguageCardClick(language.languageName)}
             >
               <LanguageCard
-                languageID={language.languageID}
                 languageName={language.languageName}
                 languageIcon={language.languageIcon}
                 languageSnippetCount={language.languageSnippetCount}
@@ -88,7 +94,8 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
           {isCreateLanguageClicked && (
             <div className={styles.modalOverlay}>
               <CreateLanguage
-                onClose={handleCloseCreateLanguage}
+                 onClose={() => handleCloseCreateLanguage()}
+                refreshBoard={() =>  handleRefreshBoard()}     
               />
             </div>
           )}
