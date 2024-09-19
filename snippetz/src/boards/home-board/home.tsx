@@ -32,9 +32,8 @@ export const HomeBoard: React.FC<LanguagesBoardProps> = ({ className }: Language
     };
 
 
-  useEffect(() => {
-    fetchLanguages();
-  }, []);
+
+
 
   const handleLanguageCardClick = (language: string) => {
     setSelectedLanguage(language);
