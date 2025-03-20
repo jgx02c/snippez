@@ -38,3 +38,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+```bash
+npm run tauri:dev
+```
+
+This will:
+1. Start the Next.js development server
+2. Compile the Rust code for Tauri
+3. Launch the Tauri window with your application
+
+Would you like me to help you install any of these prerequisites, or do you have them installed already?
+
+```bash
+source "$HOME/.cargo/env"
